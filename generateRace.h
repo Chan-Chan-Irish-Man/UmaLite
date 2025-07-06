@@ -1,13 +1,15 @@
 #ifndef GENERATERACE_H
 #define GENERATERACE_H
 
-#include "uma.h"
-#include "race.h"
-#include "skillUp.h"
+// =================== CONSTANTS ==================
 
 #define PLACEMENT_GRACE_OFFSET 3
 
+// =================== GLOBALS ==================
+
 extern int playerWin;
+
+// =================== FUNCTIONS ==================
 
 void generateRace();
 

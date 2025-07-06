@@ -1,317 +1,208 @@
-#include "uma.h"
+#include "string.h"
+#include "stdlib.h"
+#include "stddef.h"
+#include "stdio.h"
+#include "ctype.h"
+#include "generate.h"
 
-char* umaForename[12] = { "Top ", "Admire ", "Mejiro ", 
-	"Silence ", "Nice ", "Great ", 
-	"King ", "Queen ", "Special ",
-	"Daiwa ", "Rice ", "Digital " };
-
-char* umaSurname[12] = { "Scarlet", "Nature", "Vodka", 
-	"Ship", "Shower", "Cap", 
-	"Teio", "Opera", "Flash",
-	"Urara", "Wonder", "Tachyon" };
-
-char* generatedNames[NPC_AMOUNT];
-
-int generatedCount = 0;
-
-int retries = 0;
-const int maxRetries = 1000;
-
-int isDuplicate(char* npcName)
-{
-  for (int i = 0; i < generatedCount; ++i)
-  {
-    if (strcmp(generatedNames[i], npcName) == 0)
-    {
-      return 1;
-    }
-  }
-
-  return 0;
-}
-
-/*
-void saveUma(const char *filename, const Uma *uma)
-{
-	FILE *file = fopen(filename, "w");
-	if (file == NULL) 
-	{
-		perror("Unable to open file.");
-		exit(1);
-	}
-
-	fprintf(file, "Name: %s\n", uma->name);
-	fprintf(file, "Speed: %d\n", uma->speed);
-	fprintf(file, "Stamina: %d\n", uma->stamina);
-	fprintf(file, "Power: %d\n", uma->power);
-	fprintf(file, "Guts: %d\n", uma->guts);
-	fprintf(file, "Wit: %d\n", uma->wit);
-	fprintf(file, "Average Stats: %d\n", uma->average);
-
-	fclose(file);
-}
-*/
-
-const GradeThreshold gradeTable[] = {
-    {  51,  "G"   },
-    { 100,  "G+"  },
-    { 150,  "F"   },
-    { 200,  "F+"  },
-    { 250,  "E"   },
-    { 300,  "E+"  },
-    { 350,  "D"   },
-    { 400,  "D+"  },
-    { 450,  "C"   },
-    { 600,  "C+"  },
-    { 700,  "B"   },
-    { 800,  "B+"  },
-    { 900,  "A"   },
-    {1000,  "A+"  },
-    {1050,  "S"   },
-    {1100,  "S+"  },
-    {1150,  "SS"  },
-    {INT_MAX, "SS+"} // catch-all
+// =================== NAME POOLS ===================
+static const char* umaForename[] = {
+    "Top ", "Admire ", "Mejiro ", "Silence ", "Nice ", "Great ",
+    "King ", "Queen ", "Special ", "Daiwa ", "Rice ", "Digital "
 };
 
-char* gradeConvert(int stat)
-{
-  for (int i = 0; i < sizeof(gradeTable)/sizeof(gradeTable[0]); ++i)
-  {
-    if (stat < gradeTable[i].threshold)
-    {
-      return (char*)gradeTable[i].grade;
+static const char* umaSurname[] = {
+    "Scarlet", "Nature", "Vodka", "Ship", "Shower", "Cap",
+    "Teio", "Opera", "Flash", "Urara", "Wonder", "Tachyon"
+};
+
+static char* generatedNames[NPC_AMOUNT];
+static int generatedCount = 0;
+static int retries = 0;
+static const int maxRetries = 1000;
+
+// ================== GRADE TABLE ===================
+
+const GradeThreshold gradeTable[] = {
+    {   51,  "G"   },
+    {  100,  "G+"  },
+    {  150,  "F"   },
+    {  200,  "F+"  },
+    {  250,  "E"   },
+    {  300,  "E+"  },
+    {  350,  "D"   },
+    {  400,  "D+"  },
+    {  450,  "C"   },
+    {  600,  "C+"  },
+    {  700,  "B"   },
+    {  800,  "B+"  },
+    {  900,  "A"   },
+    { 1000,  "A+"  },
+    { 1050,  "S"   },
+    { 1100,  "S+"  },
+    { 1150,  "SS"  },
+    { INT_MAX, "SS+" } // catch-all
+};
+
+// =================== UTILITIES ===================
+int isDuplicate(const char* name) {
+    for (int i = 0; i < generatedCount; ++i) {
+        if (strcmp(generatedNames[i], name) == 0) return 1;
     }
-  }
-
-  return "??";
+    return 0;
 }
 
-char* enterName()
-{
-	char* name = malloc(50);
-
-	if (!name) 
-	{
-        fprintf(stderr, "Memory allocation failed.\n");
-        exit(1);
-    }
-
-	while (1)
-	{
-		char nameConfirm[10];
-
-		printf("Please enter a name for your Umamusume: ");
-		fgets(name, 50, stdin);
-		// Remove trailing newline from name
-		name[strcspn(name, "\n")] = '\0';
-
-		printf("Is this name okay? (yes/y or no/n): ");
-		fgets(nameConfirm, sizeof(nameConfirm), stdin);
-		nameConfirm[strcspn(nameConfirm, "\n")] = '\0';
-		
-		for (int i = 0; nameConfirm[i]; i++)
-		{
-			nameConfirm[i] = tolower(nameConfirm[i]);
-		}
-		
-		if (strcmp(nameConfirm, "yes") == 0 || strcmp(nameConfirm, "y") == 0)
-		{
-			break;
-		}
-	}
-
-	return name;
-}
-
-int statGenerate()
-{
-	// usually does not go above F+ at start of game (<200) or below G+ (50>)
-	
-	return (rand() % (STAT_MAX + 1 - STAT_MIN)) + STAT_MIN;
-}
-
-int averageStat(int rawSpeed, int rawStamina, int rawPower, int rawGuts, int rawWit)
-{
-	return (rawSpeed + rawStamina + rawPower + rawGuts + rawWit) / 5;
-}
-
-double witBuff(int rawWit)
-{
-	return rawWit / (WIT_SCALING_FACTOR + rawWit);
-}
-
-WitBuffResult applyWitBuff(int rawStat, int rawWit)
-{
-  WitBuffResult result;
-
-  result.witBonus = rawStat * witBuff(rawWit);
-  result.finalValue = rawStat + result.witBonus;
-
-  return result;
-}
-
-Uma PlayerUma;
-
-void generatePlayerUma()
-{
-	int rawSpeed, rawStamina, rawPower, rawGuts, rawWit, statAverage;
-
-  WitBuffResult speed, stamina, power, guts;
-
-	while (1)
-	{
-		char statConfirm[10];
-
-		rawWit = statGenerate();
-		
-		rawSpeed = statGenerate();
-		speed = applyWitBuff(rawSpeed, rawWit);
-		
-		rawStamina = statGenerate();
-		stamina = applyWitBuff(rawStamina, rawWit);
-		
-		rawPower = statGenerate();
-		power = applyWitBuff(rawPower, rawWit);
-
-		rawGuts = statGenerate();
-		guts = applyWitBuff(rawGuts, rawWit);
-		
-    statAverage = averageStat(speed.finalValue, stamina.finalValue,
-                              power.finalValue, guts.finalValue, rawWit);
-		
-		printf("Speed: %d (%s)\n(Base Speed %d + %d Wit Buff)\n",
-				speed.finalValue, gradeConvert(speed.finalValue), rawSpeed, speed.witBonus);
-
-		printf("Stamina: %d (%s)\n(Base Stamina %d + %d Wit Buff)\n",
-        stamina.finalValue, gradeConvert(stamina.finalValue), rawStamina, stamina.witBonus);
-
-		printf("Power: %d (%s)\n(Base Power %d + %d Wit Buff)\n",
-        power.finalValue, gradeConvert(stamina.finalValue), rawPower, power.witBonus);
-
-		printf("Guts: %d (%s)\n(Base Guts %d + %d Wit Buff)\n",
-        guts.finalValue, gradeConvert(guts.finalValue), rawGuts, guts.witBonus);
-
-		printf("Wit: %d (%s)\n", rawWit, gradeConvert(rawWit));
-
-		printf("Average Stat: %d\n", statAverage);
-		printf("Average Grade: %s\n", gradeConvert(statAverage));
-
-		printf("Are these stats okay? (yes/y or no/n): ");
-
-		fgets(statConfirm, sizeof(statConfirm), stdin);
-		statConfirm[strcspn(statConfirm, "\n")] = '\0';
-
-		for (int i = 0; statConfirm[i]; i++)
-		{
-			statConfirm[i] = tolower(statConfirm[i]);
-		}
-
-		if (strcmp(statConfirm, "yes") == 0 || strcmp(statConfirm, "y") == 0)
-		{
-			break;
-		}
-	}
-
-	char* umaName = enterName(); 
-
-	strcpy(PlayerUma.name, umaName);
-	PlayerUma.speed = speed.finalValue;
-	PlayerUma.stamina = stamina.finalValue;
-	PlayerUma.power = power.finalValue;
-	PlayerUma.guts = guts.finalValue;
-	PlayerUma.wit = rawWit;
-	PlayerUma.average = statAverage;
-
-	free(umaName);
-
-	// saveUma("umaStats.txt", &PlayerUma);
-}
-
-double raceFactor(int raceNo)
-{
-	return 1.0 + (raceNo - 1) * 0.3;
-}
-
-const char* getRandomForename()
-{
-  return umaForename[(rand() % (NAME_MAX + 1 - NAME_MIN)) + NAME_MIN];
-}
-
-const char* getRandomSurname()
-{
-  return umaSurname[(rand() % (NAME_MAX + 1 - NAME_MIN)) + NAME_MIN];
-}
-
-char* generateName()
-{
-	char* fullName = malloc(50);
-
-  snprintf(fullName, 50, "%s%s", getRandomForename(), getRandomSurname());
-  return fullName;
-}
-
-int npcStatBuff(int baseStat, int wit, int raceFactor)
-{
-	return (int)baseStat * (1.0 + witBuff(wit)) * raceFactor;
-}
-
-void resetGeneratedNames()
-{
-    for (int i = 0; i < generatedCount; ++i)
-    {
+void resetGeneratedNames() {
+    for (int i = 0; i < generatedCount; ++i) {
         free(generatedNames[i]);
         generatedNames[i] = NULL;
     }
     generatedCount = 0;
 }
 
-Uma NPCUma[NPC_AMOUNT];
+int statGenerate() {
+    return rand() % (STAT_MAX - STAT_MIN + 1) + STAT_MIN;
+}
 
-void generateNPCUma(int amount, int raceNo)
-{
-	for (int i = 0; i < amount; i++)
-	{
-    char npcName[50];
+int averageStat(int s, int t, int p, int g, int w) {
+    return (s + t + p + g + w) / 5;
+}
 
-    while (retries++ < maxRetries)
-    {
-        strcpy(npcName, generateName());
+double witBuff(int rawWit) {
+    return rawWit / (WIT_SCALING_FACTOR + rawWit);
+}
 
-        if (!isDuplicate(npcName))
-        {
-            generatedNames[generatedCount] = malloc(strlen(npcName) + 1);
-            if (!generatedNames[generatedCount]) {
-                fprintf(stderr, "Memory allocation failed.\n");
-                exit(1);
-            }
+WitBuffResult applyWitBuff(int stat, int wit) {
+    WitBuffResult result;
+    result.witBonus = stat * witBuff(wit);
+    result.finalValue = stat + result.witBonus;
+    return result;
+}
 
-            strcpy(generatedNames[generatedCount], npcName);
-            generatedCount++;
-            break;
+const char* gradeConvert(int stat) {
+    for (size_t i = 0; i < sizeof(gradeTable) / sizeof(gradeTable[0]); ++i) {
+        if (stat < gradeTable[i].threshold) {
+            return gradeTable[i].grade;
         }
     }
+    return "??";
+}
 
-    if (retries >= maxRetries) {
-        fprintf(stderr, "Error: Could not generate a unique NPC name after %d attempts.\n", maxRetries);
+char* getRandomName() {
+    char* fullName = malloc(50);
+    if (!fullName) {
+        perror("Memory allocation failed");
+        exit(1);
+    }
+    snprintf(fullName, 50, "%s%s",
+             umaForename[rand() % 12],
+             umaSurname[rand() % 12]);
+    return fullName;
+}
+
+char* enterName() {
+    char* name = malloc(50);
+    if (!name) {
+        fprintf(stderr, "Memory allocation failed.\n");
         exit(1);
     }
 
-		strcpy(NPCUma[i].name, npcName);
-		
-		NPCUma[i].wit = statGenerate() * raceFactor(raceNo);
+    while (1) {
+        char confirm[10];
+        printf("Enter a name for your Umamusume: ");
+        fgets(name, 50, stdin);
+        name[strcspn(name, "\n")] = '\0';
 
-		NPCUma[i].speed = npcStatBuff(statGenerate(), NPCUma[i].wit, raceFactor(raceNo));
-		
-		NPCUma[i].stamina = npcStatBuff(statGenerate(), NPCUma[i].wit, raceFactor(raceNo));
-		
-		NPCUma[i].power = npcStatBuff(statGenerate(), NPCUma[i].wit, raceFactor(raceNo));
-		
-		NPCUma[i].guts = npcStatBuff(statGenerate(), NPCUma[i].wit, raceFactor(raceNo));
-		
-		NPCUma[i].average = averageStat(NPCUma[i].speed, 
-				NPCUma[i].power, NPCUma[i].stamina, 
-				NPCUma[i].guts, NPCUma[i].wit);
-  }
+        printf("Is this name okay? (yes/y or no/n): ");
+        fgets(confirm, sizeof(confirm), stdin);
+        confirm[strcspn(confirm, "\n")] = '\0';
 
-  resetGeneratedNames();
+        for (char* c = confirm; *c; ++c) *c = tolower(*c);
+        if (strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0) break;
+    }
+
+    return name;
+}
+
+// =================== PLAYER GENERATION ===================
+Uma PlayerUma;
+
+void generatePlayerUma() {
+    while (1) {
+        int rawWit = statGenerate();
+        WitBuffResult speed = applyWitBuff(statGenerate(), rawWit);
+        WitBuffResult stamina = applyWitBuff(statGenerate(), rawWit);
+        WitBuffResult power = applyWitBuff(statGenerate(), rawWit);
+        WitBuffResult guts = applyWitBuff(statGenerate(), rawWit);
+
+        int avg = averageStat(speed.finalValue, stamina.finalValue, power.finalValue, guts.finalValue, rawWit);
+
+        printf("Speed: %d (%s)\n(Base %d + %d Wit Buff)\n", speed.finalValue, gradeConvert(speed.finalValue), speed.finalValue - speed.witBonus, speed.witBonus);
+        printf("Stamina: %d (%s)\n(Base %d + %d Wit Buff)\n", stamina.finalValue, gradeConvert(stamina.finalValue), stamina.finalValue - stamina.witBonus, stamina.witBonus);
+        printf("Power: %d (%s)\n(Base %d + %d Wit Buff)\n", power.finalValue, gradeConvert(power.finalValue), power.finalValue - power.witBonus, power.witBonus);
+        printf("Guts: %d (%s)\n(Base %d + %d Wit Buff)\n", guts.finalValue, gradeConvert(guts.finalValue), guts.finalValue - guts.witBonus, guts.witBonus);
+        printf("Wit: %d (%s)\n", rawWit, gradeConvert(rawWit));
+        printf("Average: %d (%s)\n", avg, gradeConvert(avg));
+
+        char confirm[10];
+        printf("Are these stats okay? (yes/y or no/n): ");
+        fgets(confirm, sizeof(confirm), stdin);
+        confirm[strcspn(confirm, "\n")] = '\0';
+        for (char* c = confirm; *c; ++c) *c = tolower(*c);
+        if (strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0) {
+            char* name = enterName();
+            strcpy(PlayerUma.name, name);
+            PlayerUma.speed = speed.finalValue;
+            PlayerUma.stamina = stamina.finalValue;
+            PlayerUma.power = power.finalValue;
+            PlayerUma.guts = guts.finalValue;
+            PlayerUma.wit = rawWit;
+            PlayerUma.average = avg;
+            free(name);
+            break;
+        }
+    }
+}
+
+// =================== NPC GENERATION ===================
+Uma NPCUma[NPC_AMOUNT];
+
+int npcStatBuff(int base, int wit, double multiplier) {
+    return base * (1.0 + witBuff(wit)) * multiplier;
+}
+
+double raceFactor(int raceNo) {
+    return 1.0 + (raceNo - 1) * 0.3;
+}
+
+void generateNPCUma(int count, int raceNo) {
+    double factor = raceFactor(raceNo);
+
+    for (int i = 0; i < count; ++i) {
+        char* name;
+        do {
+            name = getRandomName();
+        } while (isDuplicate(name) && ++retries < maxRetries);
+
+        if (retries >= maxRetries) {
+            fprintf(stderr, "Failed to generate unique NPC name after %d tries.\n", maxRetries);
+            exit(1);
+        }
+
+        generatedNames[generatedCount] = strdup(name);
+        generatedCount++;
+
+        Uma* npc = &NPCUma[i];
+        strcpy(npc->name, name);
+        free(name);
+
+        npc->wit = statGenerate() * factor;
+        npc->speed = npcStatBuff(statGenerate(), npc->wit, factor);
+        npc->stamina = npcStatBuff(statGenerate(), npc->wit, factor);
+        npc->power = npcStatBuff(statGenerate(), npc->wit, factor);
+        npc->guts = npcStatBuff(statGenerate(), npc->wit, factor);
+        npc->average = averageStat(npc->speed, npc->stamina, npc->power, npc->guts, npc->wit);
+    }
+
+    resetGeneratedNames();
 }

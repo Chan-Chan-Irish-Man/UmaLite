@@ -1,23 +1,28 @@
-#include "uma.h"
+#include "time.h"
+#include "stdlib.h"
+#include "generate.h"
 #include "race.h"
 #include "generateRace.h"
 
 int turnCount = 1;
 
-int main()
-{
-  srand(time(NULL));
+static void initGame() {
+    srand((unsigned int)time(NULL));
+    generatePlayerUma();
+}
 
-  generatePlayerUma();
+static int gameShouldContinue() {
+    return 1; // TODO: SO USER CAN EXIT PROGRAM ANY TIME
+}
 
-  while (1)
-  {
-    generateNPCUma(NPC_AMOUNT, turnCount);
+int main(void) {
+    initGame();
 
-    generateRace();
+    while (gameShouldContinue()) {
+        generateNPCUma(NPC_AMOUNT, turnCount);
+        generateRace();
+        turnCount++;
+    }
 
-    turnCount++;
-  }
-
-	return 0;
+    return 0;
 }
