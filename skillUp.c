@@ -18,20 +18,31 @@ int addPoints(int skillChoice, int amountChoice)
   }
 }
 
-void addWitBuff()
+// TODO: FIGURE OUT WHY ALL STATS SEEM TO INCREASE EACH TURN
+
+void addWitBuff(int playerChoice)
 {
   WitBuffResult newSpeed, newStamina, newPower, newGuts;
 
-  newSpeed = applyWitBuff(PlayerUma.speed, PlayerUma.wit);
-  newStamina = applyWitBuff(PlayerUma.stamina, PlayerUma.wit);
-  newPower = applyWitBuff(PlayerUma.power, PlayerUma.wit);
-  newGuts = applyWitBuff(PlayerUma.guts, PlayerUma.wit);
-
-  PlayerUma.speed = newSpeed.finalValue;
-  PlayerUma.stamina = newStamina.finalValue;
-  PlayerUma.power = newPower.finalValue;
-  PlayerUma.guts = newGuts.finalValue;
-
+  switch (playerChoice)
+  {
+    case 1: 
+      newSpeed = applyWitBuff(PlayerUma.speed, PlayerUma.wit); 
+      PlayerUma.speed = newSpeed.finalValue;
+      break;
+    case 2: 
+      newStamina = applyWitBuff(PlayerUma.stamina, PlayerUma.wit);
+      PlayerUma.stamina = newStamina.finalValue;
+      break;
+    case 3: 
+      newPower = applyWitBuff(PlayerUma.power, PlayerUma.wit);
+      PlayerUma.power = newPower.finalValue;
+      break;
+    case 4: 
+      newGuts = applyWitBuff(PlayerUma.guts, PlayerUma.wit);
+      PlayerUma.guts = newGuts.finalValue;
+      break;
+  }
 
   PlayerUma.average = averageStat(PlayerUma.speed, PlayerUma.stamina,
                                   PlayerUma.power, PlayerUma.guts, PlayerUma.wit);
@@ -64,7 +75,7 @@ void skillUp(int playerPlacement)
     availPoints -= addPoints(skillChoice, amountChoice);
 
     printf("%d points are left.\n", availPoints);
-  }
 
-  addWitBuff();
+    addWitBuff(skillChoice);
+  }
 }
