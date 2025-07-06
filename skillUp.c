@@ -7,6 +7,8 @@ static const char* skillNames[] = {
     "Speed", "Stamina", "Power", "Guts", "Wit"
 };
 
+// ============= UTILITIES =============
+
 int skillUpAmount(int playerPlacement) {
     return SKILL_UP_POOL / playerPlacement;
 }
@@ -56,6 +58,8 @@ void displaySkillOptions() {
         printf("[%d] %s (Current Stat: %d (%s))\n", i + 1, skillNames[i], value, gradeConvert(value));
     }
 }
+
+// ============= MAIN SKILL UP FUNCTION =============
 
 void skillUp(int playerPlacement) {
     int availPoints = skillUpAmount(playerPlacement);
