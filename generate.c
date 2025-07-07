@@ -7,13 +7,14 @@
 
 // =================== NAME POOLS ===================
 static const char* umaForename[] = {
-    "Top ", "Admire ", "Mejiro ", "Silence ", "Nice ", "Great ",
-    "King ", "Queen ", "Special ", "Daiwa ", "Rice ", "Digital "
+    "Top", "Admire", "Mejiro", "Silence", "Nice", "Great",
+    "King", "Queen", "Special", "Daiwa", "Rice", "Digital",
 };
 
 static const char* umaSurname[] = {
     "Scarlet", "Nature", "Vodka", "Ship", "Shower", "Cap",
-    "Teio", "Opera", "Flash", "Urara", "Wonder", "Tachyon"
+    "Teio", "Opera", "Flash", "Urara", "Wonder", "Tachyon",
+    "McQueen"
 };
 
 static char* generatedNames[NPC_AMOUNT];
@@ -94,7 +95,7 @@ char* getRandomName() {
         perror("Memory allocation failed");
         exit(1);
     }
-    snprintf(fullName, 50, "%s%s",
+    snprintf(fullName, 50, "%s %s",
              umaForename[rand() % 12],
              umaSurname[rand() % 12]);
     return fullName;
