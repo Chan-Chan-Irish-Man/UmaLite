@@ -15,23 +15,23 @@
 // =================== STRUCTURES ===================
 
 typedef struct {
-    int threshold;
-    const char* grade;
+  int threshold;
+  const char *grade;
 } GradeThreshold;
 
 typedef struct {
-    char name[50];
-    int speed;
-    int stamina;
-    int power;
-    int guts;
-    int wit;
-    int average;
+  char name[50];
+  int speed;
+  int stamina;
+  int power;
+  int guts;
+  int wit;
+  int average;
 } Uma;
 
 typedef struct {
-    int witBonus;
-    int finalValue;
+  int witBonus;
+  int finalValue;
 } WitBuffResult;
 
 // =================== GLOBAL STATE ===================
@@ -53,7 +53,7 @@ double witBuff(int wit);
 WitBuffResult applyWitBuff(int stat, int wit);
 
 // Grade Conversion
-const char* gradeConvert(int stat);
+const char *gradeConvert(int stat);
 
 // NPC name tracking
 void resetGeneratedNames();

@@ -1,8 +1,8 @@
-#include "time.h"
-#include "stdlib.h"
 #include "generate.h"
-#include "race.h"
 #include "generateRace.h"
+#include "race.h"
+#include "stdlib.h"
+#include "time.h"
 
 int turnCount = 1;
 
@@ -14,7 +14,7 @@ static void initGame() {
 int main(void) {
   initGame();
 
-  while (0) {
+  while (1) {
     generateNPCUma(NPC_AMOUNT, turnCount);
     generateRace();
     turnCount++;

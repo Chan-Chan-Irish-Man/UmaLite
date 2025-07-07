@@ -3,79 +3,76 @@
 
 // =================== CONFIG ===================
 
-#define STAT_COUNT 4  // Speed, Stamina, Power, Guts (Wit excluded)
+#define STAT_COUNT 4 // Speed, Stamina, Power, Guts (Wit excluded)
 
 // ---- Buff Multipliers ----
 
 // Track Types
-#define DIRT_POWER_BUFF     1.5
-#define DIRT_GUTS_BUFF      1.5
+#define DIRT_POWER_BUFF 1.5
+#define DIRT_GUTS_BUFF 1.5
 
-#define TURF_SPEED_BUFF     1.5
-#define TURF_STAMINA_BUFF   1.5
+#define TURF_SPEED_BUFF 1.5
+#define TURF_STAMINA_BUFF 1.5
 
 // Track Lengths
-#define SPRINT_SPEED_BUFF   1.4
-#define SPRINT_POWER_BUFF   1.4
+#define SPRINT_SPEED_BUFF 1.4
+#define SPRINT_POWER_BUFF 1.4
 
-#define MILE_SPEED_BUFF     1.3
-#define MILE_POWER_BUFF     1.3
-#define MILE_STAMINA_BUFF   1.1
-#define MILE_GUTS_BUFF      1.1
+#define MILE_SPEED_BUFF 1.3
+#define MILE_POWER_BUFF 1.3
+#define MILE_STAMINA_BUFF 1.1
+#define MILE_GUTS_BUFF 1.1
 
-#define MEDIUM_SPEED_BUFF   1.1
-#define MEDIUM_POWER_BUFF   1.1
+#define MEDIUM_SPEED_BUFF 1.1
+#define MEDIUM_POWER_BUFF 1.1
 #define MEDIUM_STAMINA_BUFF 1.3
-#define MEDIUM_GUTS_BUFF    1.3
+#define MEDIUM_GUTS_BUFF 1.3
 
-#define LONG_STAMINA_BUFF   1.4
-#define LONG_GUTS_BUFF      1.4
+#define LONG_STAMINA_BUFF 1.4
+#define LONG_GUTS_BUFF 1.4
 
 // Conditions
-#define FIRM_SPEED_BUFF     1.4
-#define FIRM_GUTS_BUFF      1.4
+#define FIRM_SPEED_BUFF 1.4
+#define FIRM_GUTS_BUFF 1.4
 
-#define GOOD_SPEED_BUFF     1.2
-#define GOOD_GUTS_BUFF      1.2
+#define GOOD_SPEED_BUFF 1.2
+#define GOOD_GUTS_BUFF 1.2
 
-#define SOFT_STAMINA_BUFF   1.2
-#define SOFT_POWER_BUFF     1.2
+#define SOFT_STAMINA_BUFF 1.2
+#define SOFT_POWER_BUFF 1.2
 
-#define WET_STAMINA_BUFF    1.4
-#define WET_POWER_BUFF      1.4
+#define WET_STAMINA_BUFF 1.4
+#define WET_POWER_BUFF 1.4
 
 // =================== ENUM TYPES ==================
 
-typedef enum {
-  TRACK_DIRT = 1 << 0,
-  TRACK_TURF = 1 << 1
-} TrackType;
+typedef enum { TRACK_DIRT = 1 << 0, TRACK_TURF = 1 << 1 } TrackType;
 
 typedef enum {
   LENGTH_SPRINT = 1 << 0,
-  LENGTH_MILE   = 1 << 1,
+  LENGTH_MILE = 1 << 1,
   LENGTH_MEDIUM = 1 << 2,
-  LENGTH_LONG   = 1 << 3
+  LENGTH_LONG = 1 << 3
 } TrackLength;
 
 typedef enum {
   COND_FIRM = 1 << 0,
   COND_GOOD = 1 << 1,
   COND_SOFT = 1 << 2,
-  COND_WET  = 1 << 3
+  COND_WET = 1 << 3
 } TrackCondition;
 
 // =================== STRUCTURES ===================
 
 typedef struct {
-  const char* courseName;
+  const char *courseName;
   int supportedTrackTypes;
   int supportedTrackLengths;
   int supportedConditions;
 } Racecourse;
 
 typedef struct {
-  const Racecourse* course;
+  const Racecourse *course;
   int chosenTrackType;
   int chosenTrackLength;
   int chosenConditions;
@@ -102,18 +99,18 @@ TrackLength pickRandomLength(int supportedTrackLengths);
 TrackCondition pickRandomCondition(int supportedConditions);
 
 // Display
-const char* typeName(TrackType type);
-const char* lengthName(TrackLength length);
-const char* conditionName(TrackCondition cond);
+const char *typeName(TrackType type);
+const char *lengthName(TrackLength length);
+const char *conditionName(TrackCondition cond);
 void printRace(int index, Race r);
 void printCurrentRace(Race r);
 
 // Race setup
-Race createRace(const Racecourse* course);
+Race createRace(const Racecourse *course);
 void initAvailableRaces(Race availableRaces[], int count);
 
 // Input validation
-int getValidatedInt(const char* prompt, int min, int max);
+int getValidatedInt(const char *prompt, int min, int max);
 
 // Effectiveness calculations
 int typeEffectiveness(Stats stats, TrackType type);

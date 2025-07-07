@@ -1,9 +1,12 @@
-#include "stdlib.h"
-#include "stdio.h"
-#include "generate.h"
 #include "generateRace.h"
+#include "ctype.h"
+#include "generate.h"
+#include "inheritance.h"
 #include "race.h"
 #include "skillUp.h"
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
 
 // =================== STATE ===================
 
@@ -12,7 +15,7 @@ int hasPlayerWonFinalRace = 0;
 
 // =================== HELPERS ===================
 
-void printUmaStats(const Uma* uma, const char* label) {
+void printUmaStats(const Uma *uma, const char *label) {
   printf("%s's %s:\n", uma->name, label);
   printf("Speed: %d (%s)\n", uma->speed, gradeConvert(uma->speed));
   printf("Stamina: %d (%s)\n", uma->stamina, gradeConvert(uma->stamina));
@@ -25,32 +28,43 @@ void printUmaStats(const Uma* uma, const char* label) {
 void playerWon() {
   printf("\n%s is now the champion of UmaLite! You win!\n\n", PlayerUma.name);
   printUmaStats(&PlayerUma, "Final Stats");
-  if (getc(stdin)) exit(0);
+  if (getc(stdin))
+    exit(0);
 }
 
 void playerLost(int placement) {
-  printf("\n%s placed %d out of %d, ending their career.\n",
-         PlayerUma.name, placement, NPC_AMOUNT + 1);
+  printf("\n%s placed %d out of %d, ending their career.\n", PlayerUma.name,
+         placement, NPC_AMOUNT + 1);
   printf("%s's dreams of becoming champion are over.\n", PlayerUma.name);
-  if (getc(stdin)) exit(0);
+
+  printf("\nDo you want to inherit %s's stats and try again? (yes/y or no/n): ",
+         PlayerUma.name);
+
+  char confirm[10];
+  fgets(confirm, sizeof(confirm), stdin);
+  confirm[strcspn(confirm, "\n")] = '\0';
+  for (char *c = confirm; *c; ++c)
+    *c = tolower(*c);
+  if (strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0) {
+    umaInheritance();
+  } else {
+    exit(0);
+  }
 }
 
-Stats toStats(const Uma* uma) {
-  return (Stats){
-    .speed = uma->speed,
-    .stamina = uma->stamina,
-    .power = uma->power,
-    .guts = uma->guts,
-    .count = STAT_COUNT
-  };
+Stats toStats(const Uma *uma) {
+  return (Stats){.speed = uma->speed,
+                 .stamina = uma->stamina,
+                 .power = uma->power,
+                 .guts = uma->guts,
+                 .count = STAT_COUNT};
 }
 
 int calculateTotalScore(Stats stats, Race race) {
   return totalEffectiveness(
-    typeEffectiveness(stats, race.chosenTrackType),
-    lengthEffectiveness(stats, race.chosenTrackLength),
-    conditionEffectiveness(stats, race.chosenConditions)
-  );
+      typeEffectiveness(stats, race.chosenTrackType),
+      lengthEffectiveness(stats, race.chosenTrackLength),
+      conditionEffectiveness(stats, race.chosenConditions));
 }
 
 int findBestNpcIndex(int npcTotals[]) {
@@ -67,7 +81,8 @@ int findBestNpcIndex(int npcTotals[]) {
 int calculatePlayerPlacement(int playerScore, int npcTotals[]) {
   int placement = 1;
   for (int i = 0; i < NPC_AMOUNT; ++i) {
-    if (playerScore < npcTotals[i]) placement++;
+    if (playerScore < npcTotals[i])
+      placement++;
   }
   return placement;
 }
@@ -98,7 +113,7 @@ void generateRace() {
 
   if (playerPlacement != 1) {
     int winnerIndex = findBestNpcIndex(npcScores);
-    Uma* winner = &NPCUma[winnerIndex];
+    Uma *winner = &NPCUma[winnerIndex];
 
     printf("\n%s won the race.\n", winner->name);
     printUmaStats(winner, "Stats");

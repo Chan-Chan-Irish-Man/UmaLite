@@ -1,7 +1,7 @@
 #ifndef SKILLUP_H
 #define SKILLUP_H
 
-#include "generate.h"  // Needed for access to PlayerUma
+#include "generate.h" // Needed for access to PlayerUma
 
 // =================== CONFIG ===================
 
@@ -10,11 +10,11 @@
 
 // Skills available for training
 typedef enum {
-    SKILL_SPEED = 1,
-    SKILL_STAMINA,
-    SKILL_POWER,
-    SKILL_GUTS,
-    SKILL_WIT
+  SKILL_SPEED = 1,
+  SKILL_STAMINA,
+  SKILL_POWER,
+  SKILL_GUTS,
+  SKILL_WIT
 } SkillType;
 
 // =================== FUNCTIONS ===================
