@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra -O2
 TARGET = UmaLite
 
 # Source files
-SOURCES = main.c generate.c generateRace.c race.c skillUp.c inheritance.c
+SOURCES = main.c generate.c generateRace.c race.c skillUp.c inheritance.c ui.c
 
 # Object files
 OBJECTS = $(SOURCES:.c=.o)

@@ -2,6 +2,7 @@
 #include "errno.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "ui.h"
 
 // =================== RACECOURSE DEFINITIONS ===================
 
@@ -53,49 +54,6 @@ TrackCondition pickRandomCondition(int supportedConditions) {
   return (TrackCondition)pickRandomFromBitmask(supportedConditions, options, 4);
 }
 
-// =================== TRACK LABEL HELPERS ===================
-
-const char *typeName(TrackType type) {
-  switch (type) {
-  case TRACK_DIRT:
-    return "Dirt";
-  case TRACK_TURF:
-    return "Turf";
-  default:
-    return "Unknown";
-  }
-}
-
-const char *lengthName(TrackLength length) {
-  switch (length) {
-  case LENGTH_SPRINT:
-    return "Sprint";
-  case LENGTH_MILE:
-    return "Mile";
-  case LENGTH_MEDIUM:
-    return "Medium";
-  case LENGTH_LONG:
-    return "Long";
-  default:
-    return "Unknown";
-  }
-}
-
-const char *conditionName(TrackCondition cond) {
-  switch (cond) {
-  case COND_FIRM:
-    return "Firm";
-  case COND_GOOD:
-    return "Good";
-  case COND_SOFT:
-    return "Soft";
-  case COND_WET:
-    return "Wet";
-  default:
-    return "Unknown";
-  }
-}
-
 // =================== RACE CREATION ===================
 
 Race createRace(const Racecourse *course) {
@@ -106,50 +64,11 @@ Race createRace(const Racecourse *course) {
       .chosenConditions = pickRandomCondition(course->supportedConditions)};
 }
 
-void printRace(int index, Race r) {
-  printf("[%d] %s: %s %s Race (%s)\n", index + 1, r.course->courseName,
-         lengthName(r.chosenTrackLength), typeName(r.chosenTrackType),
-         conditionName(r.chosenConditions));
-}
-
 void initAvailableRaces(Race availableRaces[], int count) {
   for (int i = 0; i < count; ++i) {
     availableRaces[i] = createRace(&TRACK_LIST[i]);
     printRace(i, availableRaces[i]);
   }
-}
-
-void printCurrentRace(Race r) {
-  printf("You chose [%s: %s %s Race (%s)]\n", r.course->courseName,
-         lengthName(r.chosenTrackLength), typeName(r.chosenTrackType),
-         conditionName(r.chosenConditions));
-}
-
-// =================== VALIDATION ===================
-
-int getValidatedInt(const char *prompt, int min, int max) {
-  int value;
-  char buf[1024];
-  char *endptr;
-  int valid;
-
-  do {
-    printf("%s", prompt);
-    if (!fgets(buf, sizeof(buf), stdin))
-      return min;
-
-    errno = 0;
-    value = strtol(buf, &endptr, 10);
-    valid = errno != ERANGE && endptr != buf &&
-            (*endptr == '\n' || *endptr == '\0') && value >= min &&
-            value <= max;
-
-    if (!valid)
-      printf("Invalid input. Please enter a number between %d and %d.\n", min,
-             max);
-  } while (!valid);
-
-  return value;
 }
 
 // =================== EFFECTIVENESS LOGIC ===================

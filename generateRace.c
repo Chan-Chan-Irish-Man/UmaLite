@@ -7,6 +7,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
+#include "ui.h"
 
 // =================== STATE ===================
 
@@ -14,43 +15,6 @@ int turn = 0;
 int hasPlayerWonFinalRace = 0;
 
 // =================== HELPERS ===================
-
-void printUmaStats(const Uma *uma, const char *label) {
-  printf("%s's %s:\n", uma->name, label);
-  printf("Speed: %d (%s)\n", uma->stats.speed, gradeConvert(uma->stats.speed));
-  printf("Stamina: %d (%s)\n", uma->stats.stamina,
-         gradeConvert(uma->stats.stamina));
-  printf("Power: %d (%s)\n", uma->stats.power, gradeConvert(uma->stats.power));
-  printf("Guts: %d (%s)\n", uma->stats.guts, gradeConvert(uma->stats.guts));
-  printf("Wit: %d (%s)\n", uma->stats.wit, gradeConvert(uma->stats.wit));
-  printf("Average: %d (%s)\n\n", uma->stats.average,
-         gradeConvert(uma->stats.average));
-}
-
-void playerWon() {
-  printf("\n%s is now the champion of UmaLite! You win!\n\n", PlayerUma.name);
-  printUmaStats(&PlayerUma, "Final Stats");
-  if (getc(stdin))
-    exit(0);
-}
-
-void playerLost(int placement) {
-  printf("\n%s placed %d out of %d, ending their career.\n", PlayerUma.name,
-         placement, NPC_AMOUNT + 1);
-  printf("%s's dreams of becoming champion are over.\n", PlayerUma.name);
-
-  char prompt[256];
-  snprintf(
-      prompt, sizeof(prompt),
-      "\nDo you want to inherit %s's stats and try again? (yes/y or no/n): ",
-      PlayerUma.name);
-
-  if (getConfirmation(prompt)) {
-    umaInheritance();
-  } else {
-    exit(0);
-  }
-}
 
 Stats toStats(const Uma *uma) {
   return (Stats){.speed = uma->stats.speed,

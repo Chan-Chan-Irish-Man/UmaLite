@@ -98,19 +98,9 @@ TrackType pickRandomType(int supportedTrackTypes);
 TrackLength pickRandomLength(int supportedTrackLengths);
 TrackCondition pickRandomCondition(int supportedConditions);
 
-// Display
-const char *typeName(TrackType type);
-const char *lengthName(TrackLength length);
-const char *conditionName(TrackCondition cond);
-void printRace(int index, Race r);
-void printCurrentRace(Race r);
-
 // Race setup
 Race createRace(const Racecourse *course);
 void initAvailableRaces(Race availableRaces[], int count);
-
-// Input validation
-int getValidatedInt(const char *prompt, int min, int max);
 
 // Effectiveness calculations
 int typeEffectiveness(Stats stats, TrackType type);

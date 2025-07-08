@@ -2,8 +2,7 @@
 #include "race.h"
 #include "stdio.h"
 #include "stdlib.h"
-
-static const char *skillNames[] = {"Speed", "Stamina", "Power", "Guts", "Wit"};
+#include "ui.h"
 
 // ============= UTILITIES =============
 
@@ -16,19 +15,19 @@ int addPoints(int skillChoice, int amount) {
 
   switch (skillChoice) {
   case SKILL_SPEED:
-    statPtr = &PlayerUma.speed;
+    statPtr = &PlayerUma.stats.speed;
     break;
   case SKILL_STAMINA:
-    statPtr = &PlayerUma.stamina;
+    statPtr = &PlayerUma.stats.stamina;
     break;
   case SKILL_POWER:
-    statPtr = &PlayerUma.power;
+    statPtr = &PlayerUma.stats.power;
     break;
   case SKILL_GUTS:
-    statPtr = &PlayerUma.guts;
+    statPtr = &PlayerUma.stats.guts;
     break;
   case SKILL_WIT:
-    statPtr = &PlayerUma.wit;
+    statPtr = &PlayerUma.stats.wit;
     break;
   default:
     return 0;
@@ -39,36 +38,14 @@ int addPoints(int skillChoice, int amount) {
 }
 
 void applyWitToAllSkills() {
-  PlayerUma.speed = applyWitBuff(PlayerUma.speed, PlayerUma.wit).finalValue;
-  PlayerUma.stamina = applyWitBuff(PlayerUma.stamina, PlayerUma.wit).finalValue;
-  PlayerUma.power = applyWitBuff(PlayerUma.power, PlayerUma.wit).finalValue;
-  PlayerUma.guts = applyWitBuff(PlayerUma.guts, PlayerUma.wit).finalValue;
-}
-
-void displaySkillOptions() {
-  for (int i = 0; i < 5; ++i) {
-    int value = 0;
-    switch (i) {
-    case 0:
-      value = PlayerUma.speed;
-      break;
-    case 1:
-      value = PlayerUma.stamina;
-      break;
-    case 2:
-      value = PlayerUma.power;
-      break;
-    case 3:
-      value = PlayerUma.guts;
-      break;
-    case 4:
-      value = PlayerUma.wit;
-      break;
-    }
-
-    printf("[%d] %s (Current Stat: %d (%s))\n", i + 1, skillNames[i], value,
-           gradeConvert(value));
-  }
+  PlayerUma.stats.speed =
+      applyWitBuff(PlayerUma.stats.speed, PlayerUma.stats.wit).finalValue;
+  PlayerUma.stats.stamina =
+      applyWitBuff(PlayerUma.stats.stamina, PlayerUma.stats.wit).finalValue;
+  PlayerUma.stats.power =
+      applyWitBuff(PlayerUma.stats.power, PlayerUma.stats.wit).finalValue;
+  PlayerUma.stats.guts =
+      applyWitBuff(PlayerUma.stats.guts, PlayerUma.stats.wit).finalValue;
 }
 
 // ============= MAIN SKILL UP FUNCTION =============
@@ -76,11 +53,11 @@ void displaySkillOptions() {
 void skillUp(int playerPlacement) {
   int availPoints = skillUpAmount(playerPlacement);
 
-  printf("%s placed %d, therefore you can use %d points.\n", PlayerUma.name,
-         playerPlacement, availPoints);
+  printStatUp("%s placed %d, therefore you can use %d points.\n",
+              playerPlacement, availPoints);
 
   while (availPoints > 0) {
-    displaySkillOptions();
+    displayStatOptions();
 
     int skillChoice = getValidatedInt("Select a skill to train (1-5): ", 1, 5);
     int amountChoice = getValidatedInt("Enter amount to add: ", 0, availPoints);
@@ -91,7 +68,7 @@ void skillUp(int playerPlacement) {
     applyWitToAllSkills();
   }
 
-  PlayerUma.average =
-      averageStat(PlayerUma.speed, PlayerUma.stamina, PlayerUma.power,
-                  PlayerUma.guts, PlayerUma.wit);
+  PlayerUma.stats.average = averageStat(
+      PlayerUma.stats.speed, PlayerUma.stats.stamina, PlayerUma.stats.power,
+      PlayerUma.stats.guts, PlayerUma.stats.wit);
 }

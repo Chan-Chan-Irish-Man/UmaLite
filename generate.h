@@ -1,8 +1,6 @@
 #ifndef GENERATE_H
 #define GENERATE_H
 
-#include "limits.h" // for INT_MAX
-
 // =================== CONFIG CONSTANTS ===================
 
 #define STAT_MIN 50
@@ -58,12 +56,6 @@ void generateNPCUma(int amount, int raceNo);
 int averageStat(int speed, int stamina, int power, int guts, int wit);
 double witBuff(int wit);
 WitBuffResult applyWitBuff(int stat, int wit);
-
-// Yes/No confirmation
-int getConfirmation(const char *prompt);
-
-// Grade Conversion
-const char *gradeConvert(int stat);
 
 // NPC name tracking
 void resetGeneratedNames();

@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
+#include "ui.h"
 
 // =================== NAME POOLS ===================
 static const char *umaForename[] = {
@@ -18,17 +19,6 @@ static char *generatedNames[NPC_AMOUNT];
 static int generatedCount = 0;
 static int retries = 0;
 static const int maxRetries = 1000;
-
-// ================== GRADE TABLE ===================
-
-const GradeThreshold gradeTable[] = {
-    {51, "G"},    {100, "G+"},  {150, "F"},      {200, "F+"},  {250, "E"},
-    {300, "E+"},  {350, "D"},   {400, "D+"},     {450, "C"},   {600, "C+"},
-    {700, "B"},   {800, "B+"},  {900, "A"},      {1000, "A+"}, {1050, "S"},
-    {1100, "S+"}, {1150, "SS"}, {INT_MAX, "SS+"} // catch-all
-};
-
-static const size_t gradeTableSize = sizeof(gradeTable) / sizeof(gradeTable[0]);
 
 // =================== UTILITIES ===================
 int isDuplicate(const char *name) {
@@ -62,15 +52,6 @@ WitBuffResult applyWitBuff(int stat, int wit) {
   return result;
 }
 
-const char *gradeConvert(int stat) {
-  for (size_t i = 0; i < gradeTableSize; ++i) {
-    if (stat < gradeTable[i].threshold) {
-      return gradeTable[i].grade;
-    }
-  }
-  return "??";
-}
-
 char *getRandomName() {
   char *fullName = malloc(NAME_LENGTH_MAX);
   if (!fullName) {
@@ -80,46 +61,6 @@ char *getRandomName() {
   snprintf(fullName, NAME_LENGTH_MAX, "%s %s", umaForename[rand() % NAME_MAX],
            umaSurname[rand() % NAME_MAX]);
   return fullName;
-}
-
-int getConfirmation(const char *prompt) {
-  char confirm[10];
-  printf("%s", prompt);
-  fgets(confirm, sizeof(confirm), stdin);
-  if (strchr(confirm, '\n') == NULL) {
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-      ;
-  }
-  confirm[strcspn(confirm, "\n")] = '\0';
-  for (char *c = confirm; *c; ++c) {
-    *c = tolower(*c);
-  }
-  return (strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0);
-}
-
-char *enterName() {
-  char *name = malloc(NAME_LENGTH_MAX);
-  if (!name) {
-    fprintf(stderr, "Memory allocation failed.\n");
-    exit(1);
-  }
-
-  while (1) {
-    printf("Enter a name for your Umamusume: ");
-    fgets(name, NAME_LENGTH_MAX, stdin);
-    if (strchr(name, '\n') == NULL) {
-      int c;
-      while ((c = getchar()) != '\n' && c != EOF)
-        ;
-    }
-    name[strcspn(name, "\n")] = '\0';
-
-    if (getConfirmation("Is this name okay? (yes/yes or no/n): "))
-      break;
-  }
-
-  return name;
 }
 
 // =================== PLAYER GENERATION ===================
