@@ -23,13 +23,17 @@ typedef struct {
 } GradeThreshold;
 
 typedef struct {
-  char name[50];
   int speed;
   int stamina;
   int power;
   int guts;
   int wit;
   int average;
+} UmaStats;
+
+typedef struct {
+  char name[50];
+  UmaStats stats;
 } Uma;
 
 typedef struct {

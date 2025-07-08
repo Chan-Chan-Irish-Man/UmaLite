@@ -13,39 +13,39 @@ int newGameMultiplier(int oldStat) {
 void umaInheritance() {
   OldPlayerUma = PlayerUma;
 
+  int *oldStatsArray[] = {&OldPlayerUma.stats.speed,
+                          &OldPlayerUma.stats.stamina,
+                          &OldPlayerUma.stats.power, &OldPlayerUma.stats.guts,
+                          &OldPlayerUma.stats.wit};
+
   generatePlayerUma();
 
-  // Store original generated stats before inheritance
-  int baseSpeed = PlayerUma.speed;
-  int baseStamina = PlayerUma.stamina;
-  int basePower = PlayerUma.power;
-  int baseGuts = PlayerUma.guts;
-  int baseWit = PlayerUma.wit;
+  int *newStatsArray[] = {&PlayerUma.stats.speed, &PlayerUma.stats.stamina,
+                          &PlayerUma.stats.power, &PlayerUma.stats.guts,
+                          &PlayerUma.stats.wit};
 
-  // Calculate inheritance boosts
-  int boostSpeed = newGameMultiplier(OldPlayerUma.speed);
-  int boostStamina = newGameMultiplier(OldPlayerUma.stamina);
-  int boostPower = newGameMultiplier(OldPlayerUma.power);
-  int boostGuts = newGameMultiplier(OldPlayerUma.guts);
-  int boostWit = newGameMultiplier(OldPlayerUma.wit);
+  int boostArray[STAT_AMOUNT];
+  int preBoostNewStats[STAT_AMOUNT];
 
-  // Apply inheritance
-  PlayerUma.speed += boostSpeed;
-  PlayerUma.stamina += boostStamina;
-  PlayerUma.power += boostPower;
-  PlayerUma.guts += boostGuts;
-  PlayerUma.wit += boostWit;
+  const char *statsNames[] = {"Speed", "Stamina", "Power", "Guts", "Wit"};
+
+  int boost;
+
+  for (size_t i = 0; i < STAT_AMOUNT; i++) {
+    preBoostNewStats[i] = *newStatsArray[i]; // Store original
+    boost = newGameMultiplier(*oldStatsArray[i]);
+    *newStatsArray[i] += boost;
+    boostArray[i] = boost;
+  }
 
   printf("\n%s inherits some of %s's stats and improves their own!\n",
          PlayerUma.name, OldPlayerUma.name);
-  printf("Speed:   %3d (+%2d) -> %3d\n", baseSpeed, boostSpeed,
-         PlayerUma.speed);
-  printf("Stamina: %3d (+%2d) -> %3d\n", baseStamina, boostStamina,
-         PlayerUma.stamina);
-  printf("Power:   %3d (+%2d) -> %3d\n", basePower, boostPower,
-         PlayerUma.power);
-  printf("Guts:    %3d (+%2d) -> %3d\n", baseGuts, boostGuts, PlayerUma.guts);
-  printf("Wit:     %3d (+%2d) -> %3d\n", baseWit, boostWit, PlayerUma.wit);
 
+  for (size_t i = 0; i < 5; i++) {
+    printf("%s: %3d (+%2d) -> %3d\n", statsNames[i], preBoostNewStats[i],
+           boostArray[i], *newStatsArray[i]);
+  }
+
+  generateNPCUma(NPC_AMOUNT, 0);
   generateRace();
 }

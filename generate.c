@@ -154,12 +154,12 @@ void generatePlayerUma() {
     if (getConfirmation("Are these stats okay? (yes/y or no/n): ")) {
       char *name = enterName();
       strcpy(PlayerUma.name, name);
-      PlayerUma.speed = speed.finalValue;
-      PlayerUma.stamina = stamina.finalValue;
-      PlayerUma.power = power.finalValue;
-      PlayerUma.guts = guts.finalValue;
-      PlayerUma.wit = rawWit;
-      PlayerUma.average = avg;
+      PlayerUma.stats.speed = speed.finalValue;
+      PlayerUma.stats.stamina = stamina.finalValue;
+      PlayerUma.stats.power = power.finalValue;
+      PlayerUma.stats.guts = guts.finalValue;
+      PlayerUma.stats.wit = rawWit;
+      PlayerUma.stats.average = avg;
       free(name);
       break;
     }
@@ -197,13 +197,14 @@ void generateNPCUma(int count, int raceNo) {
     strcpy(npc->name, name);
     free(name);
 
-    npc->wit = statGenerate() * factor;
-    npc->speed = npcStatBuff(statGenerate(), npc->wit, factor);
-    npc->stamina = npcStatBuff(statGenerate(), npc->wit, factor);
-    npc->power = npcStatBuff(statGenerate(), npc->wit, factor);
-    npc->guts = npcStatBuff(statGenerate(), npc->wit, factor);
-    npc->average =
-        averageStat(npc->speed, npc->stamina, npc->power, npc->guts, npc->wit);
+    npc->stats.wit = statGenerate() * factor;
+    npc->stats.speed = npcStatBuff(statGenerate(), npc->stats.wit, factor);
+    npc->stats.stamina = npcStatBuff(statGenerate(), npc->stats.wit, factor);
+    npc->stats.power = npcStatBuff(statGenerate(), npc->stats.wit, factor);
+    npc->stats.guts = npcStatBuff(statGenerate(), npc->stats.wit, factor);
+    npc->stats.average =
+        averageStat(npc->stats.speed, npc->stats.stamina, npc->stats.power,
+                    npc->stats.guts, npc->stats.wit);
   }
 
   resetGeneratedNames();

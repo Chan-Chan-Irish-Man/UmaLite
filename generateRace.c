@@ -17,12 +17,14 @@ int hasPlayerWonFinalRace = 0;
 
 void printUmaStats(const Uma *uma, const char *label) {
   printf("%s's %s:\n", uma->name, label);
-  printf("Speed: %d (%s)\n", uma->speed, gradeConvert(uma->speed));
-  printf("Stamina: %d (%s)\n", uma->stamina, gradeConvert(uma->stamina));
-  printf("Power: %d (%s)\n", uma->power, gradeConvert(uma->power));
-  printf("Guts: %d (%s)\n", uma->guts, gradeConvert(uma->guts));
-  printf("Wit: %d (%s)\n", uma->wit, gradeConvert(uma->wit));
-  printf("Average: %d (%s)\n\n", uma->average, gradeConvert(uma->average));
+  printf("Speed: %d (%s)\n", uma->stats.speed, gradeConvert(uma->stats.speed));
+  printf("Stamina: %d (%s)\n", uma->stats.stamina,
+         gradeConvert(uma->stats.stamina));
+  printf("Power: %d (%s)\n", uma->stats.power, gradeConvert(uma->stats.power));
+  printf("Guts: %d (%s)\n", uma->stats.guts, gradeConvert(uma->stats.guts));
+  printf("Wit: %d (%s)\n", uma->stats.wit, gradeConvert(uma->stats.wit));
+  printf("Average: %d (%s)\n\n", uma->stats.average,
+         gradeConvert(uma->stats.average));
 }
 
 void playerWon() {
@@ -51,10 +53,10 @@ void playerLost(int placement) {
 }
 
 Stats toStats(const Uma *uma) {
-  return (Stats){.speed = uma->speed,
-                 .stamina = uma->stamina,
-                 .power = uma->power,
-                 .guts = uma->guts,
+  return (Stats){.speed = uma->stats.speed,
+                 .stamina = uma->stats.stamina,
+                 .power = uma->stats.power,
+                 .guts = uma->stats.guts,
                  .count = STAT_COUNT};
 }
 
