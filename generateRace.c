@@ -37,15 +37,13 @@ void playerLost(int placement) {
          placement, NPC_AMOUNT + 1);
   printf("%s's dreams of becoming champion are over.\n", PlayerUma.name);
 
-  printf("\nDo you want to inherit %s's stats and try again? (yes/y or no/n): ",
-         PlayerUma.name);
+  char prompt[256];
+  snprintf(
+      prompt, sizeof(prompt),
+      "\nDo you want to inherit %s's stats and try again? (yes/y or no/n): ",
+      PlayerUma.name);
 
-  char confirm[10];
-  fgets(confirm, sizeof(confirm), stdin);
-  confirm[strcspn(confirm, "\n")] = '\0';
-  for (char *c = confirm; *c; ++c)
-    *c = tolower(*c);
-  if (strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0) {
+  if (getConfirmation(prompt)) {
     umaInheritance();
   } else {
     exit(0);

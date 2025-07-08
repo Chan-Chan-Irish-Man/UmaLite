@@ -28,6 +28,8 @@ const GradeThreshold gradeTable[] = {
     {1100, "S+"}, {1150, "SS"}, {INT_MAX, "SS+"} // catch-all
 };
 
+static const size_t gradeTableSize = sizeof(gradeTable) / sizeof(gradeTable[0]);
+
 // =================== UTILITIES ===================
 int isDuplicate(const char *name) {
   for (int i = 0; i < generatedCount; ++i) {
@@ -48,7 +50,7 @@ void resetGeneratedNames() {
 int statGenerate() { return rand() % (STAT_MAX - STAT_MIN + 1) + STAT_MIN; }
 
 int averageStat(int s, int t, int p, int g, int w) {
-  return (s + t + p + g + w) / 5;
+  return (s + t + p + g + w) / STAT_AMOUNT;
 }
 
 double witBuff(int rawWit) { return rawWit / (WIT_SCALING_FACTOR + rawWit); }
@@ -61,7 +63,7 @@ WitBuffResult applyWitBuff(int stat, int wit) {
 }
 
 const char *gradeConvert(int stat) {
-  for (size_t i = 0; i < sizeof(gradeTable) / sizeof(gradeTable[0]); ++i) {
+  for (size_t i = 0; i < gradeTableSize; ++i) {
     if (stat < gradeTable[i].threshold) {
       return gradeTable[i].grade;
     }
@@ -70,36 +72,50 @@ const char *gradeConvert(int stat) {
 }
 
 char *getRandomName() {
-  char *fullName = malloc(50);
+  char *fullName = malloc(NAME_LENGTH_MAX);
   if (!fullName) {
     perror("Memory allocation failed");
     exit(1);
   }
-  snprintf(fullName, 50, "%s %s", umaForename[rand() % 12],
-           umaSurname[rand() % 12]);
+  snprintf(fullName, NAME_LENGTH_MAX, "%s %s", umaForename[rand() % NAME_MAX],
+           umaSurname[rand() % NAME_MAX]);
   return fullName;
 }
 
+int getConfirmation(const char *prompt) {
+  char confirm[10];
+  printf("%s", prompt);
+  fgets(confirm, sizeof(confirm), stdin);
+  if (strchr(confirm, '\n') == NULL) {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+      ;
+  }
+  confirm[strcspn(confirm, "\n")] = '\0';
+  for (char *c = confirm; *c; ++c) {
+    *c = tolower(*c);
+  }
+  return (strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0);
+}
+
 char *enterName() {
-  char *name = malloc(50);
+  char *name = malloc(NAME_LENGTH_MAX);
   if (!name) {
     fprintf(stderr, "Memory allocation failed.\n");
     exit(1);
   }
 
   while (1) {
-    char confirm[10];
     printf("Enter a name for your Umamusume: ");
-    fgets(name, 50, stdin);
+    fgets(name, NAME_LENGTH_MAX, stdin);
+    if (strchr(name, '\n') == NULL) {
+      int c;
+      while ((c = getchar()) != '\n' && c != EOF)
+        ;
+    }
     name[strcspn(name, "\n")] = '\0';
 
-    printf("Is this name okay? (yes/y or no/n): ");
-    fgets(confirm, sizeof(confirm), stdin);
-    confirm[strcspn(confirm, "\n")] = '\0';
-
-    for (char *c = confirm; *c; ++c)
-      *c = tolower(*c);
-    if (strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0)
+    if (getConfirmation("Is this name okay? (yes/yes or no/n): "))
       break;
   }
 
@@ -135,13 +151,7 @@ void generatePlayerUma() {
     printf("Wit: %d (%s)\n", rawWit, gradeConvert(rawWit));
     printf("Average: %d (%s)\n", avg, gradeConvert(avg));
 
-    char confirm[10];
-    printf("Are these stats okay? (yes/y or no/n): ");
-    fgets(confirm, sizeof(confirm), stdin);
-    confirm[strcspn(confirm, "\n")] = '\0';
-    for (char *c = confirm; *c; ++c)
-      *c = tolower(*c);
-    if (strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0) {
+    if (getConfirmation("Are these stats okay? (yes/y or no/n): ")) {
       char *name = enterName();
       strcpy(PlayerUma.name, name);
       PlayerUma.speed = speed.finalValue;
@@ -163,7 +173,7 @@ int npcStatBuff(int base, int wit, double multiplier) {
   return base * (1.0 + witBuff(wit)) * multiplier;
 }
 
-double raceFactor(int raceNo) { return 1.0 + (raceNo - 1) * 0.3; }
+double raceFactor(int raceNo) { return 1.0 + (raceNo - 1) * RACE_FACTOR; }
 
 void generateNPCUma(int count, int raceNo) {
   double factor = raceFactor(raceNo);

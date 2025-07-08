@@ -38,28 +38,11 @@ int addPoints(int skillChoice, int amount) {
   return amount;
 }
 
-void applyWitToSkill(int skillIndex) {
-  int *statPtr = NULL;
-
-  switch (skillIndex) {
-  case 1:
-    statPtr = &PlayerUma.speed;
-    break;
-  case 2:
-    statPtr = &PlayerUma.stamina;
-    break;
-  case 3:
-    statPtr = &PlayerUma.power;
-    break;
-  case 4:
-    statPtr = &PlayerUma.guts;
-    break;
-  default:
-    return;
-  }
-
-  WitBuffResult result = applyWitBuff(*statPtr, PlayerUma.wit);
-  *statPtr = result.finalValue;
+void applyWitToAllSkills() {
+  PlayerUma.speed = applyWitBuff(PlayerUma.speed, PlayerUma.wit).finalValue;
+  PlayerUma.stamina = applyWitBuff(PlayerUma.stamina, PlayerUma.wit).finalValue;
+  PlayerUma.power = applyWitBuff(PlayerUma.power, PlayerUma.wit).finalValue;
+  PlayerUma.guts = applyWitBuff(PlayerUma.guts, PlayerUma.wit).finalValue;
 }
 
 void displaySkillOptions() {
@@ -105,7 +88,7 @@ void skillUp(int playerPlacement) {
     availPoints -= addPoints(skillChoice, amountChoice);
     printf("%d points are left.\n", availPoints);
 
-    applyWitToSkill(skillChoice);
+    applyWitToAllSkills();
   }
 
   PlayerUma.average =
