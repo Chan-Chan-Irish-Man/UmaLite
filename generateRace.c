@@ -1,12 +1,8 @@
 #include "generateRace.h"
-#include "ctype.h"
 #include "generate.h"
-#include "inheritance.h"
 #include "race.h"
-#include "skillUp.h"
+#include "statUp.h"
 #include "stdio.h"
-#include "stdlib.h"
-#include "string.h"
 #include "ui.h"
 
 // =================== STATE ===================
@@ -92,7 +88,7 @@ void generateRace() {
   } else if (turnCount > NPC_AMOUNT && hasPlayerWonFinalRace) {
     playerWon();
   } else {
-    skillUp(playerPlacement);
+    statUp(playerPlacement);
     turn++;
   }
 }

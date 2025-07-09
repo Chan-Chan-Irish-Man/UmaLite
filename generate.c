@@ -1,6 +1,5 @@
 #include "generate.h"
-#include "ctype.h"
-#include "stddef.h"
+#include "inheritance.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
@@ -43,13 +42,13 @@ int averageStat(int s, int t, int p, int g, int w) {
   return (s + t + p + g + w) / STAT_AMOUNT;
 }
 
-double witBuff(int rawWit) { return rawWit / (WIT_SCALING_FACTOR + rawWit); }
+double witBuff(int rawWit) {
+  return (double)rawWit / (WIT_SCALING_FACTOR + rawWit);
+}
 
-WitBuffResult applyWitBuff(int stat, int wit) {
-  WitBuffResult result;
-  result.witBonus = stat * witBuff(wit);
-  result.finalValue = stat + result.witBonus;
-  return result;
+int applyWitBuff(int stat, int wit) {
+  int statBuff = stat * witBuff(wit);
+  return stat + statBuff;
 }
 
 char *getRandomName() {
@@ -66,41 +65,41 @@ char *getRandomName() {
 // =================== PLAYER GENERATION ===================
 Uma PlayerUma;
 
+void generatePlayerWitBonusArray(int *baseStatsArray, int *bonusArray,
+                                 int wit) {
+  for (int i = 0; i < STAT_AMOUNT; i++) {
+    bonusArray[i] = applyWitBuff(baseStatsArray[i], wit) - baseStatsArray[i];
+  }
+}
+
 void generatePlayerUma() {
   while (1) {
-    int rawWit = statGenerate();
-    WitBuffResult speed = applyWitBuff(statGenerate(), rawWit);
-    WitBuffResult stamina = applyWitBuff(statGenerate(), rawWit);
-    WitBuffResult power = applyWitBuff(statGenerate(), rawWit);
-    WitBuffResult guts = applyWitBuff(statGenerate(), rawWit);
+    int rawStats[STAT_AMOUNT];
 
-    int avg = averageStat(speed.finalValue, stamina.finalValue,
-                          power.finalValue, guts.finalValue, rawWit);
+    for (int i = 0; i < STAT_AMOUNT; i++) {
+      rawStats[i] = statGenerate();
+    }
 
-    printf("Speed: %d (%s)\n(Base %d + %d Wit Buff)\n", speed.finalValue,
-           gradeConvert(speed.finalValue), speed.finalValue - speed.witBonus,
-           speed.witBonus);
-    printf("Stamina: %d (%s)\n(Base %d + %d Wit Buff)\n", stamina.finalValue,
-           gradeConvert(stamina.finalValue),
-           stamina.finalValue - stamina.witBonus, stamina.witBonus);
-    printf("Power: %d (%s)\n(Base %d + %d Wit Buff)\n", power.finalValue,
-           gradeConvert(power.finalValue), power.finalValue - power.witBonus,
-           power.witBonus);
-    printf("Guts: %d (%s)\n(Base %d + %d Wit Buff)\n", guts.finalValue,
-           gradeConvert(guts.finalValue), guts.finalValue - guts.witBonus,
-           guts.witBonus);
-    printf("Wit: %d (%s)\n", rawWit, gradeConvert(rawWit));
-    printf("Average: %d (%s)\n", avg, gradeConvert(avg));
+    PlayerUma.stats.wit = rawStats[4];
+
+    int **playerStatsArray = getStatsPointers(&PlayerUma);
+    for (int i = 0; i < STAT_AMOUNT; i++) {
+      *playerStatsArray[i] = applyWitBuff(rawStats[i], PlayerUma.stats.wit);
+    }
+
+    PlayerUma.stats.average = averageStat(
+        PlayerUma.stats.speed, PlayerUma.stats.stamina, PlayerUma.stats.power,
+        PlayerUma.stats.guts, PlayerUma.stats.wit);
+
+    int playerWitArray[STAT_AMOUNT];
+    generatePlayerWitBonusArray(rawStats, playerWitArray, PlayerUma.stats.wit);
+
+    printGeneratedPlayerStats(playerStatsArray, playerWitArray,
+                              PlayerUma.stats.average);
 
     if (getConfirmation("Are these stats okay? (yes/y or no/n): ")) {
       char *name = enterName();
       strcpy(PlayerUma.name, name);
-      PlayerUma.stats.speed = speed.finalValue;
-      PlayerUma.stats.stamina = stamina.finalValue;
-      PlayerUma.stats.power = power.finalValue;
-      PlayerUma.stats.guts = guts.finalValue;
-      PlayerUma.stats.wit = rawWit;
-      PlayerUma.stats.average = avg;
       free(name);
       break;
     }
@@ -132,17 +131,29 @@ void generateNPCUma(int count, int raceNo) {
     }
 
     generatedNames[generatedCount] = strdup(name);
+    if (!generatedNames[generatedCount]) {
+      perror("strdup failed");
+      exit(1);
+    }
     generatedCount++;
 
     Uma *npc = &NPCUma[i];
     strcpy(npc->name, name);
     free(name);
 
-    npc->stats.wit = statGenerate() * factor;
-    npc->stats.speed = npcStatBuff(statGenerate(), npc->stats.wit, factor);
-    npc->stats.stamina = npcStatBuff(statGenerate(), npc->stats.wit, factor);
-    npc->stats.power = npcStatBuff(statGenerate(), npc->stats.wit, factor);
-    npc->stats.guts = npcStatBuff(statGenerate(), npc->stats.wit, factor);
+    int rawStats[STAT_AMOUNT];
+
+    for (int i = 0; i < STAT_AMOUNT; i++) {
+      rawStats[i] = statGenerate();
+    }
+
+    npc->stats.wit = rawStats[4] * factor;
+
+    int **npcStatsArray = getStatsPointers(npc);
+    for (int i = 0; i < STAT_AMOUNT; i++) {
+      *npcStatsArray[i] = npcStatBuff(rawStats[i], npc->stats.wit, factor);
+    }
+
     npc->stats.average =
         averageStat(npc->stats.speed, npc->stats.stamina, npc->stats.power,
                     npc->stats.guts, npc->stats.wit);

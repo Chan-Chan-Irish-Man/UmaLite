@@ -1,9 +1,7 @@
 #include "inheritance.h"
 #include "generate.h"
 #include "generateRace.h"
-#include "skillUp.h"
 #include "stdio.h"
-#include "string.h"
 #include "ui.h"
 
 Uma OldPlayerUma;

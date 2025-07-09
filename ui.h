@@ -9,6 +9,7 @@ extern const char *const statsNames[STAT_AMOUNT];
 // used in generate.c
 int getConfirmation(const char *prompt);
 const char *gradeConvert(int stat);
+void printGeneratedPlayerStats(int **stats, int *statsWitBonus, int avg);
 char *enterName();
 
 // used in generateRace.c

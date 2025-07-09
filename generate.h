@@ -55,7 +55,7 @@ void generateNPCUma(int amount, int raceNo);
 // Stat Calculations
 int averageStat(int speed, int stamina, int power, int guts, int wit);
 double witBuff(int wit);
-WitBuffResult applyWitBuff(int stat, int wit);
+int applyWitBuff(int stat, int wit);
 
 // NPC name tracking
 void resetGeneratedNames();

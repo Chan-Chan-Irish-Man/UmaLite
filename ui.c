@@ -4,7 +4,7 @@
 #include "generate.h"
 #include "generateRace.h"
 #include "inheritance.h"
-#include "skillUp.h"
+#include "statUp.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "string.h"
@@ -44,6 +44,20 @@ int getConfirmation(const char *prompt) {
     *c = tolower(*c);
   }
   return (strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0);
+}
+
+void printGeneratedPlayerStats(int **stats, int *statsWitBonus, int avg) {
+  int i;
+
+  for (i = 0; i < STAT_AMOUNT - 1; i++) {
+    printf("%s: %d (%s)\n(Base %d + %d Wit Buff)\n", statsNames[i], *stats[i],
+           gradeConvert(*stats[i]), *stats[i] - statsWitBonus[i],
+           statsWitBonus[i]);
+  }
+  printf("Wit: %d (%s)\n", *stats[4],
+         gradeConvert(*stats[4])); // wit does not get a wit buff
+
+  printf("Average: %d (%s)\n", avg, gradeConvert(avg));
 }
 
 char *enterName() {
@@ -190,7 +204,7 @@ void printStatUp(char *text, int playerPlacement, int availPoints) {
 }
 
 void displayStatOptions() {
-  for (int i = 0; i < 5; ++i) {
+  for (int i = 0; i < STAT_AMOUNT; ++i) {
     int value = 0;
     switch (i) {
     case 0:
