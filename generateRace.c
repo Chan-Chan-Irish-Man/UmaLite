@@ -1,6 +1,7 @@
 #include "generateRace.h"
 #include "generate.h"
 #include "race.h"
+#include "raceView.h"
 #include "statUp.h"
 #include "stdio.h"
 #include "ui.h"
@@ -67,6 +68,8 @@ void generateRace(void) {
     Stats npcStats = toStats(&NPCUma[i]);
     npcScores[i] = calculateTotalScore(npcStats, selectedRace);
   }
+
+  raceView(playerScore, npcScores);
 
   // --- Placement Evaluation ---
   int playerPlacement = calculatePlayerPlacement(playerScore, npcScores);
