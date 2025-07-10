@@ -14,6 +14,6 @@ extern Uma OldPlayerUma;
 // =================== FUNCTIONS ===================
 
 int **getStatsPointers(Uma *uma);
-void umaInheritance();
+void umaInheritance(void);
 
 #endif

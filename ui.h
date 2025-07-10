@@ -10,11 +10,11 @@ extern const char *const statsNames[STAT_AMOUNT];
 int getConfirmation(const char *prompt);
 const char *gradeConvert(int stat);
 void printGeneratedPlayerStats(int **stats, int *statsWitBonus, int avg);
-char *enterName();
+char *enterName(void);
 
 // used in generateRace.c
 void printUmaStats(const Uma *uma, const char *label);
-void playerWon();
+void playerWon(void);
 void playerLost(int placement);
 
 // used in race.c
@@ -27,10 +27,10 @@ int getValidatedInt(const char *prompt, int min, int max);
 
 // used in statUp.c
 void printStatUp(char *text, int playerPlacement, int availPoints);
-void displayStatOptions();
+void displayStatOptions(void);
 
 // used in inheritance.c
 void printInheritedStats(const int *preBoosts, const int *boosts,
-                         int **newStats);
+                         int **newStats, Uma oldUma);
 
 #endif

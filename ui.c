@@ -60,7 +60,7 @@ void printGeneratedPlayerStats(int **stats, int *statsWitBonus, int avg) {
   printf("Average: %d (%s)\n", avg, gradeConvert(avg));
 }
 
-char *enterName() {
+char *enterName(void) {
   char *name = malloc(NAME_LENGTH_MAX);
   if (!name) {
     fprintf(stderr, "Memory allocation failed.\n");
@@ -96,7 +96,7 @@ void printUmaStats(const Uma *uma, const char *label) {
          gradeConvert(uma->stats.average));
 }
 
-void playerWon() {
+void playerWon(void) {
   printf("\n%s is now the champion of UmaLite! You win!\n\n", PlayerUma.name);
   printUmaStats(&PlayerUma, "Final Stats");
   if (getc(stdin))
@@ -203,7 +203,7 @@ void printStatUp(char *text, int playerPlacement, int availPoints) {
   printf(text, PlayerUma.name, playerPlacement, availPoints);
 }
 
-void displayStatOptions() {
+void displayStatOptions(void) {
   for (int i = 0; i < STAT_AMOUNT; ++i) {
     int value = 0;
     switch (i) {
@@ -230,9 +230,9 @@ void displayStatOptions() {
 }
 
 void printInheritedStats(const int *preBoosts, const int *boosts,
-                         int **newStats) {
+                         int **newStats, Uma oldUma) {
   printf("\n%s inherits some of %s's stats and improves their own!\n",
-         PlayerUma.name, OldPlayerUma.name);
+         PlayerUma.name, oldUma.name);
 
   for (size_t i = 0; i < STAT_AMOUNT; i++) {
     printf("%s: %3d (+%2d) -> %3d\n", statsNames[i], preBoosts[i], boosts[i],

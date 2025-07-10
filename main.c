@@ -6,7 +6,7 @@
 
 int turnCount = 1;
 
-static void initGame() {
+static void initGame(void) {
   srand((unsigned int)time(NULL));
   generatePlayerUma();
 }

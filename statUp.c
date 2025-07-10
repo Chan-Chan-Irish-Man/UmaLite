@@ -37,7 +37,7 @@ int addPoints(int skillChoice, int amount) {
   return amount;
 }
 
-void applyWitToAllStats() {
+void applyWitToAllStats(void) {
   PlayerUma.stats.speed =
       applyWitBuff(PlayerUma.stats.speed, PlayerUma.stats.wit);
   PlayerUma.stats.stamina =

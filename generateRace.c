@@ -49,7 +49,7 @@ int calculatePlayerPlacement(int playerScore, int npcTotals[]) {
 
 // =================== MAIN FUNCTION ===================
 
-void generateRace() {
+void generateRace(void) {
   Race availableRaces[NUM_TRACKS];
   initAvailableRaces(availableRaces, NUM_TRACKS);
 

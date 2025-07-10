@@ -49,7 +49,7 @@ extern Uma NPCUma[NPC_AMOUNT];
 // =================== FUNCTIONS ===================
 
 // Uma Generation
-void generatePlayerUma();
+void generatePlayerUma(void);
 void generateNPCUma(int amount, int raceNo);
 
 // Stat Calculations
@@ -58,6 +58,6 @@ double witBuff(int wit);
 int applyWitBuff(int stat, int wit);
 
 // NPC name tracking
-void resetGeneratedNames();
+void resetGeneratedNames(void);
 
 #endif // UMA_H

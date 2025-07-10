@@ -4,8 +4,6 @@
 #include "stdio.h"
 #include "ui.h"
 
-Uma OldPlayerUma;
-
 int newGameMultiplier(int oldStat) {
   return (int)(oldStat * INHERITANCE_MULTIPLIER);
 }
@@ -31,8 +29,8 @@ void applyStatInheritance(int **oldStats, int **newStats, int *boosts,
   }
 }
 
-void umaInheritance() {
-  OldPlayerUma = PlayerUma;
+void umaInheritance(void) {
+  Uma OldPlayerUma = PlayerUma;
 
   int **oldStatsArray = getStatsPointers(&OldPlayerUma);
 
@@ -46,7 +44,7 @@ void umaInheritance() {
   applyStatInheritance(oldStatsArray, newStatsArray, boostArray,
                        preBoostsArray);
 
-  printInheritedStats(preBoostsArray, boostArray, newStatsArray);
+  printInheritedStats(preBoostsArray, boostArray, newStatsArray, OldPlayerUma);
 
   generateNPCUma(NPC_AMOUNT, 0);
   generateRace();

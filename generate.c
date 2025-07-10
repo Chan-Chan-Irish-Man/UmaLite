@@ -28,7 +28,7 @@ int isDuplicate(const char *name) {
   return 0;
 }
 
-void resetGeneratedNames() {
+void resetGeneratedNames(void) {
   for (int i = 0; i < generatedCount; ++i) {
     free(generatedNames[i]);
     generatedNames[i] = NULL;
@@ -36,7 +36,7 @@ void resetGeneratedNames() {
   generatedCount = 0;
 }
 
-int statGenerate() { return rand() % (STAT_MAX - STAT_MIN + 1) + STAT_MIN; }
+int statGenerate(void) { return rand() % (STAT_MAX - STAT_MIN + 1) + STAT_MIN; }
 
 int averageStat(int s, int t, int p, int g, int w) {
   return (s + t + p + g + w) / STAT_AMOUNT;
@@ -51,7 +51,7 @@ int applyWitBuff(int stat, int wit) {
   return stat + statBuff;
 }
 
-char *getRandomName() {
+char *getRandomName(void) {
   char *fullName = malloc(NAME_LENGTH_MAX);
   if (!fullName) {
     perror("Memory allocation failed");
@@ -72,7 +72,7 @@ void generatePlayerWitBonusArray(int *baseStatsArray, int *bonusArray,
   }
 }
 
-void generatePlayerUma() {
+void generatePlayerUma(void) {
   while (1) {
     int rawStats[STAT_AMOUNT];
 
