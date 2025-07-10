@@ -3,6 +3,7 @@
 
 #include "generate.h"
 #include "race.h"
+#include "raceView.h"
 
 extern const char *const statsNames[STAT_AMOUNT];
 
@@ -32,5 +33,8 @@ void displayStatOptions(void);
 // used in inheritance.c
 void printInheritedStats(const int *preBoosts, const int *boosts,
                          int **newStats, Uma oldUma);
+
+// used in raceView.c
+void renderRace(UmaRaceStats umas[]);
 
 #endif

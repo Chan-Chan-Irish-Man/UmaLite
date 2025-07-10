@@ -4,28 +4,12 @@
 #include "stdlib.h"
 #include "string.h"
 #include "time.h"
+#include "ui.h"
 #include "windows.h"
 
 UmaRaceStats umas[TOTAL_UMAS];
 
-void renderRace(UmaRaceStats umas[]) {
-  system("cls");
-
-  for (int i = 0; i < TOTAL_UMAS; i++) {
-    printf("[%2d][%-18s] ", i + 1, umas[i].uma.name);
-
-    for (int j = 0; j < FINISH_LINE; j++) {
-      if (j == umas[i].position)
-        putchar(umas[i].icon);
-      else
-        putchar('=');
-    }
-
-    printf("|\n");
-  }
-}
-
-int allFinished(UmaRaceStats umas[]) {
+int raceEnd(UmaRaceStats umas[]) {
   for (int i = 0; i < TOTAL_UMAS; i++) {
     if (umas[i].position < FINISH_LINE) {
       return 0;
@@ -34,22 +18,20 @@ int allFinished(UmaRaceStats umas[]) {
   return 1;
 }
 
-void initializeRaceUmas(int playerScore, int npcScores[]) {
-  int total = TOTAL_UMAS;
-  int allScores[TOTAL_UMAS];
-  int speedMap[TOTAL_UMAS];
-
+void generateScoreArray(int playerScore, int npcScores[], int allScores[]) {
   for (int i = 0; i < NPC_AMOUNT; i++) {
     allScores[i] = npcScores[i];
   }
-  allScores[NPC_AMOUNT] = playerScore;
+  allScores[NPC_AMOUNT] = playerScore; // last allScore index
+}
 
-  int indices[TOTAL_UMAS];
-  for (int i = 0; i < total; i++)
+void indexScore(int allScores[], int indices[]) {
+  for (int i = 0; i < TOTAL_UMAS; i++) {
     indices[i] = i;
+  }
 
-  for (int i = 0; i < total - 1; i++) {
-    for (int j = i + 1; j < total; j++) {
+  for (int i = 0; i < TOTAL_UMAS - 1; i++) {
+    for (int j = i + 1; j < TOTAL_UMAS; j++) {
       if (allScores[indices[i]] < allScores[indices[j]]) {
         int temp = indices[i];
         indices[i] = indices[j];
@@ -57,19 +39,24 @@ void initializeRaceUmas(int playerScore, int npcScores[]) {
       }
     }
   }
+}
 
-  for (int rank = 0; rank < total; rank++) {
+void mapSpeed(int indices[], int speedMap[]) {
+  for (int rank = 0; rank < TOTAL_UMAS; rank++) {
     int umaIndex = indices[rank];
     speedMap[umaIndex] = TOTAL_UMAS - rank;
-    if (speedMap[umaIndex] < 1)
+    if (speedMap[umaIndex] < 1) {
       speedMap[umaIndex] = 1;
+    }
   }
+}
 
+void fillUmaStats(int speedMap[]) {
   for (int i = 0; i < NPC_AMOUNT; i++) {
     umas[i].uma = NPCUma[i];
     umas[i].icon = 'U';
     umas[i].position = 0;
-    umas[i].score = speedMap[i];
+    umas[i].score = speedMap[i]; // so well-suited umas are faster on screen
     umas[i].isPlayer = 0;
   }
 
@@ -80,10 +67,26 @@ void initializeRaceUmas(int playerScore, int npcScores[]) {
   umas[NPC_AMOUNT].isPlayer = 1;
 }
 
+void initializeRaceUmas(int playerScore, int npcScores[]) {
+  int allScores[TOTAL_UMAS];
+
+  generateScoreArray(playerScore, npcScores, allScores);
+
+  int indices[TOTAL_UMAS];
+
+  indexScore(allScores, indices);
+
+  int speedMap[TOTAL_UMAS];
+
+  mapSpeed(indices, speedMap);
+
+  fillUmaStats(speedMap);
+}
+
 void raceView(int playerScore, int npcScores[]) {
   initializeRaceUmas(playerScore, npcScores);
 
-  while (!allFinished(umas)) {
+  while (!raceEnd(umas)) {
     for (int i = 0; i < TOTAL_UMAS; i++) {
       umas[i].position += umas[i].score;
       if (umas[i].position > FINISH_LINE)

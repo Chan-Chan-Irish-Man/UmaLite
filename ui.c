@@ -4,6 +4,7 @@
 #include "generate.h"
 #include "generateRace.h"
 #include "inheritance.h"
+#include "raceView.h"
 #include "statUp.h"
 #include "stdio.h"
 #include "stdlib.h"
@@ -237,5 +238,22 @@ void printInheritedStats(const int *preBoosts, const int *boosts,
   for (size_t i = 0; i < STAT_AMOUNT; i++) {
     printf("%s: %3d (+%2d) -> %3d\n", statsNames[i], preBoosts[i], boosts[i],
            *newStats[i]);
+  }
+}
+
+void renderRace(UmaRaceStats umas[]) {
+  system("cls");
+
+  for (int i = 0; i < TOTAL_UMAS; i++) {
+    printf("[%2d][%-18s] ", i + 1, umas[i].uma.name);
+
+    for (int j = 0; j < FINISH_LINE; j++) {
+      if (j == umas[i].position)
+        putchar(umas[i].icon);
+      else
+        putchar('=');
+    }
+
+    printf("|\n");
   }
 }
