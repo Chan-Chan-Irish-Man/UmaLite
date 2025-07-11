@@ -6,12 +6,8 @@
 #include "stdio.h"
 #include "ui.h"
 
-// =================== STATE ===================
-
 int turn = 1;
 int hasPlayerWonFinalRace = 0;
-
-// =================== HELPERS ===================
 
 Stats toStats(const Uma *uma) {
   return (Stats){.speed = uma->stats.speed,
@@ -48,8 +44,6 @@ int calculatePlayerPlacement(int playerScore, int npcTotals[]) {
   return placement;
 }
 
-// =================== MAIN FUNCTION ===================
-
 void generateRace(void) {
   Race availableRaces[NUM_TRACKS];
   initAvailableRaces(availableRaces, NUM_TRACKS);
@@ -58,11 +52,9 @@ void generateRace(void) {
   Race selectedRace = availableRaces[raceChoice - 1];
   printCurrentRace(selectedRace);
 
-  // --- Player Score ---
   Stats playerStats = toStats(&PlayerUma);
   int playerScore = calculateTotalScore(playerStats, selectedRace);
 
-  // --- NPC Scores ---
   int npcScores[NPC_AMOUNT];
   for (int i = 0; i < NPC_AMOUNT; ++i) {
     Stats npcStats = toStats(&NPCUma[i]);
@@ -71,7 +63,6 @@ void generateRace(void) {
 
   raceView(playerScore, npcScores, turn, selectedRace.course->courseName);
 
-  // --- Placement Evaluation ---
   int playerPlacement = calculatePlayerPlacement(playerScore, npcScores);
 
   if (playerPlacement != 1) {
@@ -84,7 +75,6 @@ void generateRace(void) {
     hasPlayerWonFinalRace = 1;
   }
 
-  // --- Game Progression Rules ---
   int placementCutoff = NPC_AMOUNT + PLACEMENT_GRACE_OFFSET - turn;
   if (playerPlacement >= placementCutoff) {
     playerLost(playerPlacement);
