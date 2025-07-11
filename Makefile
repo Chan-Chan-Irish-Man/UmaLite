@@ -1,36 +1,17 @@
-# Compiler to use
 CC = gcc
+CFLAGS = -Wall -Wextra -O2 -I"./include/"
 
-# Compiler flags
-CFLAGS = -Wall -Wextra -O2
-
-# Target executable name
+SOURCES := $(wildcard ./src/*.c)
+OBJECTS := $(patsubst ./src/%.c, ./src/%.o, $(SOURCES))
 TARGET = UmaLite
 
-# Source files
-SOURCES = main.c generate.c generateRace.c race.c statUp.c inheritance.c ui.c raceView.c
-
-# Object files
-OBJECTS = $(SOURCES:.c=.o)
-
-# Default target
 all: $(TARGET)
 
-# Link object files to create executable
 $(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(TARGET)
+	$(CC) $(OBJECTS) -o $@
 
-# Compile source files to object files
-%.o: %.c
+./src/%.o: ./src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Clean up
 clean:
-	del /Q $(OBJECTS) $(TARGET).exe
-
-# Run
-honse:
-	$(TARGET).exe
-
-# Phony targets
-.PHONY: all clean
+	cmd /C "del /Q $(subst /,\,$(OBJECTS)) $(TARGET).exe"
