@@ -241,9 +241,10 @@ void printInheritedStats(const int *preBoosts, const int *boosts,
   }
 }
 
-void renderRace(UmaRaceStats umas[]) {
+void renderRace(UmaRaceStats umas[], int turn, const char *trackName) {
   system("cls");
 
+  printf("Race [%d/%d], at %s.\n", turn, TOTAL_UMAS, trackName);
   for (int i = 0; i < TOTAL_UMAS; i++) {
     printf("[%2d][%-18s] ", i + 1, umas[i].uma.name);
 

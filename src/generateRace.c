@@ -8,7 +8,7 @@
 
 // =================== STATE ===================
 
-int turn = 0;
+int turn = 1;
 int hasPlayerWonFinalRace = 0;
 
 // =================== HELPERS ===================
@@ -69,7 +69,7 @@ void generateRace(void) {
     npcScores[i] = calculateTotalScore(npcStats, selectedRace);
   }
 
-  raceView(playerScore, npcScores);
+  raceView(playerScore, npcScores, turn, selectedRace.course->courseName);
 
   // --- Placement Evaluation ---
   int playerPlacement = calculatePlayerPlacement(playerScore, npcScores);
