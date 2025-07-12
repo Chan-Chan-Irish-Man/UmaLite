@@ -30,6 +30,8 @@ void applyStatInheritance(int **oldStats, int **newStats, int *boosts,
 }
 
 void umaInheritance(void) {
+  int turn = 1;
+
   Uma OldPlayerUma = PlayerUma;
 
   int **oldStatsArray = getStatsPointers(&OldPlayerUma);
@@ -46,6 +48,6 @@ void umaInheritance(void) {
 
   printInheritedStats(preBoostsArray, boostArray, newStatsArray, OldPlayerUma);
 
-  generateNPCUma(NPC_AMOUNT, 0);
-  generateRace();
+  generateNPCUma(NPC_AMOUNT, turn);
+  generateRace(turn);
 }

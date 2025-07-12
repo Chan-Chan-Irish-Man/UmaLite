@@ -7,7 +7,6 @@
 #include "stdio.h"
 #include "ui.h"
 
-int turn = 1;
 int hasPlayerWonFinalRace = 0;
 
 Stats toStats(const Uma *uma) {
@@ -46,7 +45,7 @@ int calculatePlayerPlacement(int playerScore, int npcTotals[]) {
   return placement;
 }
 
-void generateRace(void) {
+void generateRace(int turn) {
   Race availableRaces[NUM_TRACKS];
   initAvailableRaces(availableRaces, NUM_TRACKS);
 
@@ -83,7 +82,7 @@ void generateRace(void) {
   int placementCutoff = NPC_AMOUNT + PLACEMENT_GRACE_OFFSET - turn;
   if (playerPlacement >= placementCutoff) {
     playerLost(playerPlacement);
-  } else if (turnCount > NPC_AMOUNT && hasPlayerWonFinalRace) {
+  } else if (turn > NPC_AMOUNT && hasPlayerWonFinalRace) {
     playerWon();
   } else {
     statUp(playerPlacement);

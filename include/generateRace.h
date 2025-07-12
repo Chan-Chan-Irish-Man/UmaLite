@@ -11,6 +11,6 @@ extern int playerWin;
 
 // =================== FUNCTIONS ==================
 
-void generateRace(void);
+void generateRace(int turn);
 
 #endif

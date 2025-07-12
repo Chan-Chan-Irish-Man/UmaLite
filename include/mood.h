@@ -5,12 +5,6 @@
 #define AWFUL_MULTIPLIER .6
 #define MOOD_WGHT_COUNT 21
 
-typedef enum {
-  GREAT = 1 << 0,
-  GOOD = 1 << 1,
-  NORMAL = 1 << 2,
-  BAD = 1 << 3,
-  AWFUL = 1 << 4
-} Moods;
+typedef enum { GREAT, GOOD, NORMAL, BAD, AWFUL, MOOD_COUNT } Mood;
 
 double moodMultiplier(void);

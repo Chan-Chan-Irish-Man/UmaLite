@@ -4,7 +4,7 @@
 #include "stdlib.h"
 #include "time.h"
 
-int turnCount = 1;
+int turn = 1;
 
 static void initGame(void) {
   srand((unsigned int)time(NULL));
@@ -15,9 +15,9 @@ int main(void) {
   initGame();
 
   while (1) {
-    generateNPCUma(NPC_AMOUNT, turnCount);
-    generateRace();
-    turnCount++;
+    generateNPCUma(NPC_AMOUNT, turn);
+    generateRace(turn);
+    turn++;
   }
 
   return 0;
