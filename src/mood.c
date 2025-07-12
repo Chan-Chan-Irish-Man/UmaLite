@@ -1,13 +1,8 @@
 #include "mood.h"
 #include "stdlib.h"
 
-const int moodWeights[MOOD_COUNT] = {
-    2, // GREAT
-    4, // GOOD
-    9, // NORMAL
-    4, // BAD
-    2  // AWFUL
-};
+const int moodWeights[MOOD_COUNT] = {GREAT_WEIGHT, GOOD_WEIGHT, NORMAL_WEIGHT,
+                                     BAD_WEIGHT, AWFUL_WEIGHT};
 
 Mood getRandomMood() {
   int totalWeight = 0;
