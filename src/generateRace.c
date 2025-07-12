@@ -1,5 +1,6 @@
 #include "generateRace.h"
 #include "generate.h"
+#include "mood.h"
 #include "race.h"
 #include "raceView.h"
 #include "statUp.h"
@@ -17,11 +18,12 @@ Stats toStats(const Uma *uma) {
                  .count = STAT_COUNT};
 }
 
-int calculateTotalScore(Stats stats, Race race) {
+int calculateTotalScore(Stats stats, Race race, double mood) {
   return totalEffectiveness(
-      typeEffectiveness(stats, race.chosenTrackType),
-      lengthEffectiveness(stats, race.chosenTrackLength),
-      conditionEffectiveness(stats, race.chosenConditions));
+             typeEffectiveness(stats, race.chosenTrackType),
+             lengthEffectiveness(stats, race.chosenTrackLength),
+             conditionEffectiveness(stats, race.chosenConditions)) *
+         mood;
 }
 
 int findBestNpcIndex(int npcTotals[]) {
@@ -53,15 +55,18 @@ void generateRace(void) {
   printCurrentRace(selectedRace);
 
   Stats playerStats = toStats(&PlayerUma);
-  int playerScore = calculateTotalScore(playerStats, selectedRace);
+  double playerMood = moodMultiplier();
+  int playerScore = calculateTotalScore(playerStats, selectedRace, playerMood);
 
   int npcScores[NPC_AMOUNT];
   for (int i = 0; i < NPC_AMOUNT; ++i) {
     Stats npcStats = toStats(&NPCUma[i]);
-    npcScores[i] = calculateTotalScore(npcStats, selectedRace);
+    npcScores[i] =
+        calculateTotalScore(npcStats, selectedRace, moodMultiplier());
   }
 
-  raceView(playerScore, npcScores, turn, selectedRace.course->courseName);
+  raceView(playerScore, npcScores, turn, selectedRace.course->courseName,
+           playerMood);
 
   int playerPlacement = calculatePlayerPlacement(playerScore, npcScores);
 

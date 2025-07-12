@@ -4,6 +4,7 @@
 #include "generate.h"
 #include "generateRace.h"
 #include "inheritance.h"
+#include "mood.h"
 #include "raceView.h"
 #include "statUp.h"
 #include "stdio.h"
@@ -241,7 +242,29 @@ void printInheritedStats(const int *preBoosts, const int *boosts,
   }
 }
 
-void renderRace(UmaRaceStats umas[], int turn, const char *trackName) {
+void printPlayerMood(double moodNum) {
+  char moodName[10];
+
+  if (moodNum == GREAT_MULTIPLIER) {
+    strcpy(moodName, "Great");
+  } else if (moodNum == GOOD_MULTIPLIER) {
+    strcpy(moodName, "Good");
+  } else if (moodNum == NORMAL_MULTIPLIER) {
+    strcpy(moodName, "Normal");
+  } else if (moodNum == BAD_MULTIPLIER) {
+    strcpy(moodName, "Bad");
+  } else if (moodNum == AWFUL_MULTIPLIER) {
+    strcpy(moodName, "Awful");
+  } else {
+    strcpy(moodName, "Unknown");
+  }
+
+  printf("%s is feeling %s (effectiveness is multiplied by %.1f).\n",
+         PlayerUma.name, moodName, moodNum);
+}
+
+void renderRace(UmaRaceStats umas[], int turn, const char *trackName,
+                double playerMood) {
   system("cls");
 
   printf("Race [%d/%d], at %s.\n", turn, TOTAL_UMAS, trackName);
@@ -257,4 +280,6 @@ void renderRace(UmaRaceStats umas[], int turn, const char *trackName) {
 
     printf("|\n");
   }
+
+  printPlayerMood(playerMood);
 }

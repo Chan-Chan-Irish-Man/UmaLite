@@ -83,8 +83,8 @@ void initializeRaceUmas(int playerScore, int npcScores[]) {
   fillUmaStats(speedMap);
 }
 
-void raceView(int playerScore, int npcScores[], int turn,
-              const char *trackName) {
+void raceView(int playerScore, int npcScores[], int turn, const char *trackName,
+              double playerMood) {
   initializeRaceUmas(playerScore, npcScores);
 
   while (!raceEnd(umas)) {
@@ -94,7 +94,7 @@ void raceView(int playerScore, int npcScores[], int turn,
         umas[i].position = FINISH_LINE;
     }
 
-    renderRace(umas, turn, trackName);
+    renderRace(umas, turn, trackName, playerMood); // in ui.c
     Sleep(RACE_SPEED);
   }
 }

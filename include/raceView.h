@@ -15,7 +15,7 @@ typedef struct {
   int isPlayer;
 } UmaRaceStats;
 
-void raceView(int playerScore, int npcScores[], int turn,
-              const char *trackName);
+void raceView(int playerScore, int npcScores[], int turn, const char *trackName,
+              double playerMood);
 
 #endif
