@@ -18,6 +18,11 @@ typedef struct {
   int isPlayer;
 } UmaRaceStats;
 
+typedef struct {
+  int index;
+  int score;
+} UmaScore;
+
 void raceView(int playerScore, int npcScores[], int turn, const char *trackName,
               double playerMood);
 

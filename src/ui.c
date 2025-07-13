@@ -79,7 +79,7 @@ char *enterName(void) {
     }
     name[strcspn(name, "\n")] = '\0';
 
-    if (getConfirmation("Is this name okay? (yes/yes or no/n): "))
+    if (getConfirmation("Is this name okay? (yes/y or no/n): "))
       break;
   }
 

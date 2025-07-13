@@ -31,22 +31,27 @@ void generateScoreArray(int playerScore, int npcScores[], int allScores[]) {
   for (int i = 0; i < NPC_AMOUNT; i++) {
     allScores[i] = npcScores[i];
   }
-  allScores[NPC_AMOUNT] = playerScore; // last allScore index
+  allScores[NPC_AMOUNT] = playerScore; // Player is last in the array
+}
+
+int compareUmaScores(const void *a, const void *b) {
+  const UmaScore *ua = (const UmaScore *)a;
+  const UmaScore *ub = (const UmaScore *)b;
+  return ub->score - ua->score; // Descending
 }
 
 void sortIndicesByScore(int allScores[], int indices[]) {
+  UmaScore umaScr[TOTAL_UMAS];
+
   for (int i = 0; i < TOTAL_UMAS; i++) {
-    indices[i] = i;
+    umaScr[i].index = i;
+    umaScr[i].score = allScores[i];
   }
 
-  for (int i = 0; i < TOTAL_UMAS - 1; i++) {
-    for (int j = i + 1; j < TOTAL_UMAS; j++) {
-      if (allScores[indices[i]] < allScores[indices[j]]) {
-        int temp = indices[i];
-        indices[i] = indices[j];
-        indices[j] = temp;
-      }
-    }
+  qsort(umaScr, TOTAL_UMAS, sizeof(UmaScore), compareUmaScores);
+
+  for (int i = 0; i < TOTAL_UMAS; i++) {
+    indices[i] = umaScr[i].index;
   }
 }
 
@@ -55,7 +60,7 @@ void mapSpeed(int indices[], int speedMap[]) {
 
   for (int rank = 0; rank < TOTAL_UMAS; rank++) {
     int umaIndex = indices[rank];
-    // linearly map top rank to FASTEST_UMA, lowest rank to SLOWEST_UMA
+    // Linearly map top rank to FASTEST_UMA, lowest to SLOWEST_UMA
     speedMap[umaIndex] = FASTEST_UMA - (rank * range / (TOTAL_UMAS - 1));
   }
 }
@@ -71,17 +76,12 @@ void fillUmaStats(int speedMap[]) {
 
 void initializeRaceUmas(int playerScore, int npcScores[]) {
   int allScores[TOTAL_UMAS];
-
-  generateScoreArray(playerScore, npcScores, allScores);
-
   int indices[TOTAL_UMAS];
-
-  sortIndicesByScore(allScores, indices);
-
   int speedMap[TOTAL_UMAS];
 
+  generateScoreArray(playerScore, npcScores, allScores);
+  sortIndicesByScore(allScores, indices);
   mapSpeed(indices, speedMap);
-
   fillUmaStats(speedMap);
 }
 
@@ -92,11 +92,12 @@ void raceView(int playerScore, int npcScores[], int turn, const char *trackName,
   while (!raceEnd(umas)) {
     for (int i = 0; i < TOTAL_UMAS; i++) {
       umas[i].position += umas[i].score;
-      if (umas[i].position > FINISH_LINE)
+      if (umas[i].position > FINISH_LINE) {
         umas[i].position = FINISH_LINE;
+      }
     }
 
-    renderRace(umas, turn, trackName, playerMood); // in ui.c
+    renderRace(umas, turn, trackName, playerMood); // Provided by ui.c
     Sleep(RACE_SPEED);
   }
 }
