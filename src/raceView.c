@@ -9,6 +9,15 @@
 
 UmaRaceStats umas[TOTAL_UMAS];
 
+static void initUma(UmaRaceStats *umaSlot, const Uma *uma, char icon, int speed,
+                    int isPlayer) {
+  umaSlot->uma = *uma;
+  umaSlot->icon = icon;
+  umaSlot->position = 0;
+  umaSlot->score = speed;
+  umaSlot->isPlayer = isPlayer;
+}
+
 int raceEnd(UmaRaceStats umas[]) {
   for (int i = 0; i < TOTAL_UMAS; i++) {
     if (umas[i].position < FINISH_LINE) {
@@ -25,7 +34,7 @@ void generateScoreArray(int playerScore, int npcScores[], int allScores[]) {
   allScores[NPC_AMOUNT] = playerScore; // last allScore index
 }
 
-void indexScore(int allScores[], int indices[]) {
+void sortIndicesByScore(int allScores[], int indices[]) {
   for (int i = 0; i < TOTAL_UMAS; i++) {
     indices[i] = i;
   }
@@ -42,29 +51,22 @@ void indexScore(int allScores[], int indices[]) {
 }
 
 void mapSpeed(int indices[], int speedMap[]) {
+  int range = FASTEST_UMA - SLOWEST_UMA;
+
   for (int rank = 0; rank < TOTAL_UMAS; rank++) {
     int umaIndex = indices[rank];
-    speedMap[umaIndex] = TOTAL_UMAS - rank;
-    if (speedMap[umaIndex] < 1) {
-      speedMap[umaIndex] = 1;
-    }
+    // linearly map top rank to FASTEST_UMA, lowest rank to SLOWEST_UMA
+    speedMap[umaIndex] = FASTEST_UMA - (rank * range / (TOTAL_UMAS - 1));
   }
 }
 
 void fillUmaStats(int speedMap[]) {
-  for (int i = 0; i < NPC_AMOUNT; i++) {
-    umas[i].uma = NPCUma[i];
-    umas[i].icon = 'U';
-    umas[i].position = 0;
-    umas[i].score = speedMap[i]; // so well-suited umas are faster on screen
-    umas[i].isPlayer = 0;
+  for (int i = 0; i < TOTAL_UMAS; i++) {
+    const Uma *u = (i == NPC_AMOUNT) ? &PlayerUma : &NPCUma[i];
+    char icon = (i == NPC_AMOUNT) ? '@' : 'U';
+    int isPlayer = (i == NPC_AMOUNT);
+    initUma(&umas[i], u, icon, speedMap[i], isPlayer);
   }
-
-  umas[NPC_AMOUNT].uma = PlayerUma;
-  umas[NPC_AMOUNT].icon = '@';
-  umas[NPC_AMOUNT].position = 0;
-  umas[NPC_AMOUNT].score = speedMap[NPC_AMOUNT];
-  umas[NPC_AMOUNT].isPlayer = 1;
 }
 
 void initializeRaceUmas(int playerScore, int npcScores[]) {
@@ -74,7 +76,7 @@ void initializeRaceUmas(int playerScore, int npcScores[]) {
 
   int indices[TOTAL_UMAS];
 
-  indexScore(allScores, indices);
+  sortIndicesByScore(allScores, indices);
 
   int speedMap[TOTAL_UMAS];
 

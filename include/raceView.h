@@ -3,7 +3,10 @@
 
 #define TOTAL_UMAS NPC_AMOUNT + 1
 #define FINISH_LINE 40
-#define RACE_SPEED 300
+#define RACE_SPEED 300 // lower = faster rendering
+
+#define FASTEST_UMA NPC_AMOUNT
+#define SLOWEST_UMA 1
 
 #include "generate.h"
 
