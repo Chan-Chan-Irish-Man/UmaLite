@@ -2,6 +2,7 @@
 #include "generate.h"
 #include "generateRace.h"
 #include "stdio.h"
+#include "stdlib.h"
 #include "ui.h"
 
 int newGameMultiplier(int oldStat) {
@@ -30,8 +31,6 @@ void applyStatInheritance(int **oldStats, int **newStats, int *boosts,
 }
 
 void umaInheritance(void) {
-  int turn = 1;
-
   Uma OldPlayerUma = PlayerUma;
 
   int **oldStatsArray = getStatsPointers(&OldPlayerUma);
@@ -47,7 +46,4 @@ void umaInheritance(void) {
                        preBoostsArray);
 
   printInheritedStats(preBoostsArray, boostArray, newStatsArray, OldPlayerUma);
-
-  generateNPCUma(NPC_AMOUNT, turn);
-  generateRace(turn);
 }

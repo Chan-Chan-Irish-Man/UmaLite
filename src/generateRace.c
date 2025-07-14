@@ -25,9 +25,9 @@ int calculateTotalScore(Stats stats, Race race, double mood) {
          mood;
 }
 
-int findBestNpcIndex(int npcTotals[]) {
+int findBestNpcIndex(int npcTotals[], int npcCount) {
   int bestScore = 0, bestIndex = 0;
-  for (int i = 0; i < NPC_AMOUNT; ++i) {
+  for (int i = 0; i < npcCount; ++i) {
     if (npcTotals[i] > bestScore) {
       bestScore = npcTotals[i];
       bestIndex = i;
@@ -36,16 +36,16 @@ int findBestNpcIndex(int npcTotals[]) {
   return bestIndex;
 }
 
-int calculatePlayerPlacement(int playerScore, int npcTotals[]) {
+int calculatePlayerPlacement(int playerScore, int npcTotals[], int npcCount) {
   int placement = 1;
-  for (int i = 0; i < NPC_AMOUNT; ++i) {
+  for (int i = 0; i < npcCount; ++i) {
     if (playerScore < npcTotals[i])
       placement++;
   }
   return placement;
 }
 
-void generateRace(int turn) {
+void generateRace(Uma NPCUma[], int turn, int npcCount, int totalRaces) {
   Race availableRaces[NUM_TRACKS];
   initAvailableRaces(availableRaces, NUM_TRACKS);
 
@@ -57,20 +57,21 @@ void generateRace(int turn) {
   double playerMood = moodMultiplier();
   int playerScore = calculateTotalScore(playerStats, selectedRace, playerMood);
 
-  int npcScores[NPC_AMOUNT];
-  for (int i = 0; i < NPC_AMOUNT; ++i) {
+  int npcScores[npcCount];
+  for (int i = 0; i < npcCount; ++i) {
     Stats npcStats = toStats(&NPCUma[i]);
     npcScores[i] =
         calculateTotalScore(npcStats, selectedRace, moodMultiplier());
   }
 
   raceView(playerScore, npcScores, turn, selectedRace.course->courseName,
-           playerMood);
+           playerMood, npcCount, NPCUma, totalRaces);
 
-  int playerPlacement = calculatePlayerPlacement(playerScore, npcScores);
+  int playerPlacement =
+      calculatePlayerPlacement(playerScore, npcScores, npcCount);
 
   if (playerPlacement != 1) {
-    int winnerIndex = findBestNpcIndex(npcScores);
+    int winnerIndex = findBestNpcIndex(npcScores, npcCount);
     Uma *winner = &NPCUma[winnerIndex];
 
     printf("\n%s won the race.\n", winner->name);
@@ -79,10 +80,10 @@ void generateRace(int turn) {
     hasPlayerWonFinalRace = 1;
   }
 
-  int placementCutoff = NPC_AMOUNT + PLACEMENT_GRACE_OFFSET - turn;
+  int placementCutoff = npcCount + PLACEMENT_GRACE_OFFSET - turn;
   if (playerPlacement >= placementCutoff) {
-    playerLost(playerPlacement);
-  } else if (turn > NPC_AMOUNT && hasPlayerWonFinalRace) {
+    playerLost(playerPlacement, npcCount);
+  } else if (turn > npcCount && hasPlayerWonFinalRace) {
     playerWon();
   } else {
     statUp(playerPlacement);

@@ -11,6 +11,8 @@
 #include "stdlib.h"
 #include "string.h"
 
+extern int restart;
+
 const char *const statsNames[STAT_AMOUNT] = {"Speed", "Stamina", "Power",
                                              "Guts", "Wit"};
 
@@ -105,9 +107,9 @@ void playerWon(void) {
     exit(0);
 }
 
-void playerLost(int placement) {
+void playerLost(int placement, int npcCount) {
   printf("\n%s placed %d out of %d, ending their career.\n", PlayerUma.name,
-         placement, NPC_AMOUNT + 1);
+         placement, npcCount + 1);
   printf("%s's dreams of becoming champion are over.\n", PlayerUma.name);
 
   char prompt[256];
@@ -117,7 +119,7 @@ void playerLost(int placement) {
       PlayerUma.name);
 
   if (getConfirmation(prompt)) {
-    umaInheritance();
+    restart = 1;
   } else {
     exit(0);
   }
@@ -264,11 +266,11 @@ void printPlayerMood(double moodNum) {
 }
 
 void renderRace(UmaRaceStats umas[], int turn, const char *trackName,
-                double playerMood) {
+                double playerMood, int npcCount, int totalRaces) {
   system("cls");
 
-  printf("Race [%d/%d], at %s.\n", turn, TOTAL_UMAS, trackName);
-  for (int i = 0; i < TOTAL_UMAS; i++) {
+  printf("Race [%d/%d], at %s.\n", turn, totalRaces, trackName);
+  for (int i = 0; i < npcCount + 1; i++) {
     printf("[%2d][%-18s] ", i + 1, umas[i].uma.name);
 
     for (int j = 0; j < FINISH_LINE; j++) {

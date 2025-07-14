@@ -9,7 +9,8 @@
 #define NAME_MIN 0
 #define NAME_MAX 13
 #define NAME_LENGTH_MAX 50
-#define NPC_AMOUNT 16
+#define MIN_NPC 5
+#define MAX_NPC 15
 #define WIT_SCALING_FACTOR 1200.0
 #define RACE_FACTOR .3f
 
@@ -38,13 +39,13 @@ typedef struct {
 extern int turnCount;
 
 extern Uma PlayerUma;
-extern Uma NPCUma[NPC_AMOUNT];
 
 // =================== FUNCTIONS ===================
 
 // Uma Generation
+int randNumInRange(int min, int max);
 void generatePlayerUma(void);
-void generateNPCUma(int amount, int raceNo);
+Uma *generateNPCUma(int amount, int raceNo);
 
 // Stat Calculations
 int averageStat(int speed, int stamina, int power, int guts, int wit);
@@ -52,6 +53,6 @@ double witBuff(int wit);
 int applyWitBuff(int stat, int wit);
 
 // NPC name tracking
-void resetGeneratedNames(void);
+void resetGeneratedNames(char *generatedNames[], int npcAmount);
 
 #endif // UMA_H

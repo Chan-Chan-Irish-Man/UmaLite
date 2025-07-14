@@ -1,16 +1,14 @@
 #ifndef GENERATERACE_H
 #define GENERATERACE_H
 
-// =================== CONSTANTS ==================
+#include "generate.h"
 
 #define PLACEMENT_GRACE_OFFSET 3
-
-// =================== GLOBALS ==================
+#define MIN_RACE 6
+#define MAX_RACE 16
 
 extern int playerWin;
 
-// =================== FUNCTIONS ==================
-
-void generateRace(int turn);
+void generateRace(Uma NPCUma[], int turn, int npcCount, int totalRaces);
 
 #endif

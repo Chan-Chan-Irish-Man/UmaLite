@@ -17,7 +17,7 @@ char *enterName(void);
 void printUmaStats(const Uma *uma, const char *label);
 void printPlayerMood(double moodNum);
 void playerWon(void);
-void playerLost(int placement);
+void playerLost(int placement, int npcCount);
 
 // used in race.c
 const char *typeName(TrackType type);
@@ -37,6 +37,6 @@ void printInheritedStats(const int *preBoosts, const int *boosts,
 
 // used in raceView.c
 void renderRace(UmaRaceStats umas[], int turn, const char *trackName,
-                double playerMood);
+                double playerMood, int npcCount, int totalRaces);
 
 #endif

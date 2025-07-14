@@ -1,7 +1,6 @@
 #ifndef RACEVIEW_H
 #define RACEVIEW_H
 
-#define TOTAL_UMAS NPC_AMOUNT + 1
 #define FINISH_LINE 40
 #define RACE_SPEED 300 // lower = faster rendering
 
@@ -24,6 +23,6 @@ typedef struct {
 } UmaScore;
 
 void raceView(int playerScore, int npcScores[], int turn, const char *trackName,
-              double playerMood);
+              double playerMood, int npcCount, Uma NPCUma[], int totalRaces);
 
 #endif
