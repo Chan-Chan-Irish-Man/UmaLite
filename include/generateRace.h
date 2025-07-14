@@ -9,6 +9,7 @@
 
 extern int playerWin;
 
-void generateRace(Uma NPCUma[], int turn, int npcCount, int totalRaces);
+void generateRace(Uma NPCUma[], int turn, int npcCount, int totalRaces,
+                  int placementCutoff);
 
 #endif
