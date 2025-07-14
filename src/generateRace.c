@@ -81,7 +81,6 @@ void generateRace(Uma NPCUma[], int turn, int npcCount, int totalRaces,
     hasPlayerWonFinalRace = 1;
   }
 
-  placementCutoff = npcCount + PLACEMENT_GRACE_OFFSET - turn;
   if (playerPlacement >= placementCutoff) {
     playerLost(playerPlacement, npcCount);
   } else if (turn > npcCount && hasPlayerWonFinalRace) {
