@@ -9,7 +9,7 @@
 #define NAME_MIN 0
 #define NAME_MAX 13
 #define NAME_LENGTH_MAX 50
-#define NPC_AMOUNT 15
+#define NPC_AMOUNT 100
 #define WIT_SCALING_FACTOR 1200.0
 #define RACE_FACTOR .3f
 
