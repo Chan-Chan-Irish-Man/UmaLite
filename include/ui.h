@@ -5,6 +5,8 @@
 #include "race.h"
 #include "raceView.h"
 
+#define MOODNAME_LENGTH_MAX 10
+
 extern const char *const statsNames[STAT_AMOUNT];
 
 // used in generate.c
@@ -37,6 +39,6 @@ void printInheritedStats(const int *preBoosts, const int *boosts,
 
 // used in raceView.c
 void renderRace(UmaRaceStats umas[], int turn, const char *trackName,
-                double playerMood, int npcCount, int totalRaces);
+                double umaMood[], int npcCount, int totalRaces);
 
 #endif

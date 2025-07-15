@@ -2,8 +2,6 @@
 #include "stdlib.h"
 #include "ui.h"
 
-// =================== RACECOURSE DEFINITIONS ===================
-
 Racecourse TRACK_LIST[] = {
     {.courseName = "Sunny Downs",
      .supportedTrackTypes = TRACK_TURF,
@@ -20,10 +18,6 @@ Racecourse TRACK_LIST[] = {
      .supportedConditions = COND_FIRM | COND_GOOD | COND_SOFT | COND_WET}};
 
 const int NUM_TRACKS = sizeof(TRACK_LIST) / sizeof(Racecourse);
-
-// =================== RANDOM PICKERS ===================
-
-#define MAX_TRACK_OPTIONS 4
 
 static int pickRandomFromBitmask(int mask, int options[], int maxOptions) {
   int count = 0;
@@ -52,8 +46,6 @@ TrackCondition pickRandomCondition(int supportedConditions) {
   return (TrackCondition)pickRandomFromBitmask(supportedConditions, options, 4);
 }
 
-// =================== RACE CREATION ===================
-
 Race createRace(const Racecourse *course) {
   return (Race){
       .course = course,
@@ -68,8 +60,6 @@ void initAvailableRaces(Race availableRaces[], int count) {
     printRace(i, availableRaces[i]);
   }
 }
-
-// =================== EFFECTIVENESS LOGIC ===================
 
 int integerAverage(int a, int b, int c, int d, int count) {
   return (a + b + c + d) / count;

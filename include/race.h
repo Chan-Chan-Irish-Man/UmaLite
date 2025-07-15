@@ -1,8 +1,6 @@
 #ifndef RACE_H
 #define RACE_H
 
-// =================== CONFIG ===================
-
 #define STAT_COUNT 4 // Speed, Stamina, Power, Guts (Wit excluded)
 
 // ---- Buff Multipliers ----
@@ -44,7 +42,7 @@
 #define WET_STAMINA_BUFF 1.4
 #define WET_POWER_BUFF 1.4
 
-// =================== ENUM TYPES ==================
+#define MAX_TRACK_OPTIONS 4
 
 typedef enum { TRACK_DIRT = 1 << 0, TRACK_TURF = 1 << 1 } TrackType;
 
@@ -61,8 +59,6 @@ typedef enum {
   COND_SOFT = 1 << 2,
   COND_WET = 1 << 3
 } TrackCondition;
-
-// =================== STRUCTURES ===================
 
 typedef struct {
   const char *courseName;
@@ -86,12 +82,8 @@ typedef struct {
   int count;
 } Stats;
 
-// =================== GLOBALS ===================
-
 extern Racecourse TRACK_LIST[];
 extern const int NUM_TRACKS;
-
-// =================== FUNCTIONS ===================
 
 // Random pickers
 TrackType pickRandomType(int supportedTrackTypes);

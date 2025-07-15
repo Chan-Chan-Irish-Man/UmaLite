@@ -23,6 +23,6 @@ typedef struct {
 } UmaScore;
 
 void raceView(int playerScore, int npcScores[], int turn, const char *trackName,
-              double playerMood, int npcCount, Uma NPCUma[], int totalRaces);
+              double umaMood[], int npcCount, Uma NPCUma[], int totalRaces);
 
 #endif

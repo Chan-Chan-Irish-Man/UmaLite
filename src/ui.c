@@ -244,8 +244,12 @@ void printInheritedStats(const int *preBoosts, const int *boosts,
   }
 }
 
-void printPlayerMood(double moodNum) {
-  char moodName[10];
+char *getMoodName(double moodNum) {
+  char *moodName = malloc(MOODNAME_LENGTH_MAX);
+  if (!moodName) {
+    fprintf(stderr, "Memory allocation failed.\n");
+    exit(1);
+  }
 
   if (moodNum == GREAT_MULTIPLIER) {
     strcpy(moodName, "Great");
@@ -261,27 +265,67 @@ void printPlayerMood(double moodNum) {
     strcpy(moodName, "Unknown");
   }
 
+  return moodName;
+}
+
+char *printMoodRaceView(double moodNum) {
+  char *moodName = malloc(MOODNAME_LENGTH_MAX);
+  if (!moodName) {
+    fprintf(stderr, "Memory allocation failed.\n");
+    exit(1);
+  }
+
+  strcpy(moodName, getMoodName(moodNum));
+
+  return moodName;
+}
+
+void printPlayerMood(double moodNum) {
+  char mood[10];
+
+  strcpy(mood, getMoodName(moodNum));
+
   printf("%s is feeling %s (effectiveness is multiplied by %.1f).\n",
-         PlayerUma.name, moodName, moodNum);
+         PlayerUma.name, mood, moodNum);
 }
 
 void renderRace(UmaRaceStats umas[], int turn, const char *trackName,
-                double playerMood, int npcCount, int totalRaces) {
+                double umaMood[], int npcCount, int totalRaces) {
   system("cls");
 
   printf("Race [%d/%d], at %s.\n", turn, totalRaces, trackName);
+
+  int maxNameWidth = 0;
+  int maxMoodWidth = 0;
+
+  for (int i = 0; i < npcCount + 1; ++i) {
+    int nameLen = strlen(umas[i].uma.name);
+    if (nameLen > maxNameWidth)
+      maxNameWidth = nameLen;
+
+    char *moodStr = printMoodRaceView(umaMood[i]);
+    int moodLen = strlen(moodStr);
+    if (moodLen > maxMoodWidth)
+      maxMoodWidth = moodLen;
+
+    free(moodStr);
+  }
+
+  maxNameWidth += 2;
+  maxMoodWidth += 2;
+
   for (int i = 0; i < npcCount + 1; i++) {
-    printf("[%2d][%-18s] ", i + 1, umas[i].uma.name);
+    const char *moodStr = printMoodRaceView(umaMood[i]);
+
+    printf("[%2d][%-*s|%*s] ", i + 1, maxNameWidth, umas[i].uma.name,
+           maxMoodWidth, moodStr);
 
     for (int j = 0; j < FINISH_LINE; j++) {
-      if (j == umas[i].position)
-        putchar(umas[i].icon);
-      else
-        putchar('=');
+      putchar(j == umas[i].position ? umas[i].icon : '=');
     }
 
     printf("|\n");
   }
 
-  printPlayerMood(playerMood);
+  printPlayerMood(umaMood[npcCount]);
 }

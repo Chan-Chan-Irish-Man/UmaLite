@@ -58,15 +58,21 @@ void generateRace(Uma NPCUma[], int turn, int npcCount, int totalRaces,
   double playerMood = moodMultiplier();
   int playerScore = calculateTotalScore(playerStats, selectedRace, playerMood);
 
+  double umaMood[npcCount];
+
   int npcScores[npcCount];
   for (int i = 0; i < npcCount; ++i) {
     Stats npcStats = toStats(&NPCUma[i]);
-    npcScores[i] =
-        calculateTotalScore(npcStats, selectedRace, moodMultiplier());
+    double npcMood = moodMultiplier();
+
+    npcScores[i] = calculateTotalScore(npcStats, selectedRace, npcMood);
+    umaMood[i] = npcMood;
   }
 
+  umaMood[npcCount] = playerMood;
+
   raceView(playerScore, npcScores, turn, selectedRace.course->courseName,
-           playerMood, npcCount, NPCUma, totalRaces);
+           umaMood, npcCount, NPCUma, totalRaces);
 
   int playerPlacement =
       calculatePlayerPlacement(playerScore, npcScores, npcCount);
