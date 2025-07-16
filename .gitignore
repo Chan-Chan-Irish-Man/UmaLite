@@ -57,6 +57,6 @@ dkms.conf
 
 # CPPCheck
 *.cppcheck
-umalite-cppcheck-build-dir
+umalite-cppcheck-build-dir/
 
 # End of https://www.toptal.com/developers/gitignore/api/c
