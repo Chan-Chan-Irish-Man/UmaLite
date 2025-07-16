@@ -67,7 +67,7 @@ void generatePlayerUma(void) {
     for (int i = 0; i < STAT_AMOUNT; i++) {
       rawStats[i] = statGenerate();
     }
-    PlayerUma.stats.wit = rawStats[4];
+    PlayerUma.stats.wit = rawStats[WIT];
 
     int **playerStatsArray = getStatsPointers(&PlayerUma);
     for (int i = 0; i < STAT_AMOUNT; i++) {
@@ -149,7 +149,7 @@ Uma *generateNPCUma(int npcAmount, int raceNo) {
       rawStats[s] = statGenerate();
     }
 
-    npc->stats.wit = rawStats[4];
+    npc->stats.wit = rawStats[WIT];
     int **npcStatsArray = getStatsPointers(npc);
     for (int s = 0; s < STAT_AMOUNT; s++) {
       *npcStatsArray[s] = npcStatBuff(rawStats[s], npc->stats.wit, factor);

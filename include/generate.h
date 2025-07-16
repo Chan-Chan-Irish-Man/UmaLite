@@ -1,8 +1,6 @@
 #ifndef GENERATE_H
 #define GENERATE_H
 
-// =================== CONFIG CONSTANTS ===================
-
 #define STAT_MIN 50
 #define STAT_MAX 200
 #define STAT_AMOUNT 5
@@ -13,8 +11,6 @@
 #define MAX_NPC 15
 #define WIT_SCALING_FACTOR 1200.0
 #define RACE_FACTOR .3f
-
-// =================== STRUCTURES ===================
 
 typedef struct {
   int threshold;
@@ -34,13 +30,11 @@ typedef struct {
   int witBonus, finalValue;
 } WitBuffResult;
 
-// =================== GLOBAL STATE ===================
-
 extern int turnCount;
 
 extern Uma PlayerUma;
 
-// =================== FUNCTIONS ===================
+enum Stat { SPEED, STAMINA, POWER, GUTS, WIT };
 
 // Uma Generation
 int randNumInRange(int min, int max);

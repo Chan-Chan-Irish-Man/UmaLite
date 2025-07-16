@@ -17,11 +17,15 @@ const char *const statsNames[STAT_AMOUNT] = {"Speed", "Stamina", "Power",
                                              "Guts", "Wit"};
 
 const GradeThreshold gradeTable[] = {
-    {51, "G"},    {100, "G+"},  {150, "F"},      {200, "F+"},  {250, "E"},
-    {300, "E+"},  {350, "D"},   {400, "D+"},     {450, "C"},   {600, "C+"},
-    {700, "B"},   {800, "B+"},  {900, "A"},      {1000, "A+"}, {1050, "S"},
-    {1100, "S+"}, {1150, "SS"}, {INT_MAX, "SS+"} // catch-all
-};
+    {G_THRESHOLD, "G"},   {G_PLUS_THRESHOLD, "G+"},
+    {F_THRESHOLD, "F"},   {F_PLUS_THRESHOLD, "F+"},
+    {E_THRESHOLD, "E"},   {E_PLUS_THRESHOLD, "E+"},
+    {D_THRESHOLD, "D"},   {D_PLUS_THRESHOLD, "D+"},
+    {C_THRESHOLD, "C"},   {C_PLUS_THRESHOLD, "C+"},
+    {B_THRESHOLD, "B"},   {B_PLUS_THRESHOLD, "B+"},
+    {A_THRESHOLD, "A"},   {A_PLUS_THRESHOLD, "A+"},
+    {S_THRESHOLD, "S"},   {S_PLUS_THRESHOLD, "S+"},
+    {SS_THRESHOLD, "SS"}, {SS_PLUS_THRESHOLD, "SS+"}};
 
 static const size_t gradeTableSize = sizeof(gradeTable) / sizeof(gradeTable[0]);
 
@@ -35,7 +39,7 @@ const char *gradeConvert(int stat) {
 }
 
 int getConfirmation(const char *prompt) {
-  char confirm[10];
+  char confirm[CONFIRM_LEN];
   printf("%s", prompt);
   fgets(confirm, sizeof(confirm), stdin);
   if (strchr(confirm, '\n') == NULL) {
@@ -53,13 +57,13 @@ int getConfirmation(const char *prompt) {
 void printGeneratedPlayerStats(int **stats, int *statsWitBonus, int avg) {
   int i;
 
-  for (i = 0; i < STAT_AMOUNT - 1; i++) {
+  for (i = 0; i < STAT_AMOUNT - WIT_OFFSET; i++) {
     printf("%s: %d (%s)\n(Base %d + %d Wit Buff)\n", statsNames[i], *stats[i],
            gradeConvert(*stats[i]), *stats[i] - statsWitBonus[i],
            statsWitBonus[i]);
   }
-  printf("Wit: %d (%s)\n", *stats[4],
-         gradeConvert(*stats[4])); // wit does not get a wit buff
+  printf("Wit: %d (%s)\n", *stats[WIT],
+         gradeConvert(*stats[WIT])); // wit does not get a wit buff
 
   printf("Average: %d (%s)\n", avg, gradeConvert(avg));
 }
@@ -112,7 +116,7 @@ void playerLost(int placement, int npcCount) {
          placement, npcCount + 1);
   printf("%s's dreams of becoming champion are over.\n", PlayerUma.name);
 
-  char prompt[256];
+  char prompt[PROMPT_SIZE];
   snprintf(
       prompt, sizeof(prompt),
       "\nDo you want to inherit %s's stats and try again? (yes/y or no/n): ",
@@ -167,9 +171,9 @@ const char *conditionName(TrackCondition cond) {
 }
 
 void printRace(int index, Race r) {
-  printf("[%d] %s: %s %s Race (%s)\n", index + 1, r.course->courseName,
-         lengthName(r.chosenTrackLength), typeName(r.chosenTrackType),
-         conditionName(r.chosenConditions));
+  printf("[%d] %s: %s %s Race (%s)\n", index + RACE_INDEX_OFFSET,
+         r.course->courseName, lengthName(r.chosenTrackLength),
+         typeName(r.chosenTrackType), conditionName(r.chosenConditions));
 }
 
 void printCurrentRace(Race r) {
@@ -180,7 +184,7 @@ void printCurrentRace(Race r) {
 
 int getValidatedInt(const char *prompt, int min, int max) {
   int value;
-  char buf[1024];
+  char buf[INT_INPUT_BUF_SIZE];
   char *endptr;
   int valid;
 
@@ -211,25 +215,25 @@ void displayStatOptions(void) {
   for (int i = 0; i < STAT_AMOUNT; ++i) {
     int value = 0;
     switch (i) {
-    case 0:
+    case SPEED:
       value = PlayerUma.stats.speed;
       break;
-    case 1:
+    case STAMINA:
       value = PlayerUma.stats.stamina;
       break;
-    case 2:
+    case POWER:
       value = PlayerUma.stats.power;
       break;
-    case 3:
+    case GUTS:
       value = PlayerUma.stats.guts;
       break;
-    case 4:
+    case WIT:
       value = PlayerUma.stats.wit;
       break;
     }
 
-    printf("[%d] %s (Current Stat: %d (%s))\n", i + 1, statsNames[i], value,
-           gradeConvert(value));
+    printf("[%d] %s (Current Stat: %d (%s))\n", i + ARRAY_OFFSET, statsNames[i],
+           value, gradeConvert(value));
   }
 }
 
@@ -244,46 +248,28 @@ void printInheritedStats(const int *preBoosts, const int *boosts,
   }
 }
 
-char *getMoodName(double moodNum) {
-  char *moodName = malloc(MOODNAME_LENGTH_MAX);
-  if (!moodName) {
-    fprintf(stderr, "Memory allocation failed.\n");
-    exit(1);
-  }
-
+const char *getMoodName(double moodNum) {
   if (moodNum == GREAT_MULTIPLIER) {
-    strcpy(moodName, "Great");
-  } else if (moodNum == GOOD_MULTIPLIER) {
-    strcpy(moodName, "Good");
-  } else if (moodNum == NORMAL_MULTIPLIER) {
-    strcpy(moodName, "Normal");
-  } else if (moodNum == BAD_MULTIPLIER) {
-    strcpy(moodName, "Bad");
-  } else if (moodNum == AWFUL_MULTIPLIER) {
-    strcpy(moodName, "Awful");
-  } else {
-    strcpy(moodName, "Unknown");
+    return "Great";
+  }
+  if (moodNum == GOOD_MULTIPLIER) {
+    return "Good";
+  }
+  if (moodNum == NORMAL_MULTIPLIER) {
+    return "Normal";
+  }
+  if (moodNum == BAD_MULTIPLIER) {
+    return "Bad";
+  }
+  if (moodNum == AWFUL_MULTIPLIER) {
+    return "Awful";
   }
 
-  return moodName;
-}
-
-char *printMoodRaceView(double moodNum) {
-  char *moodName = malloc(MOODNAME_LENGTH_MAX);
-  if (!moodName) {
-    fprintf(stderr, "Memory allocation failed.\n");
-    exit(1);
-  }
-
-  strcpy(moodName, getMoodName(moodNum));
-
-  return moodName;
+  return "Unknown";
 }
 
 void printPlayerMood(double moodNum) {
-  char mood[10];
-
-  strcpy(mood, getMoodName(moodNum));
+  const char *mood = getMoodName(moodNum);
 
   printf("%s is feeling %s (effectiveness is multiplied by %.1f).\n",
          PlayerUma.name, mood, moodNum);
@@ -292,13 +278,13 @@ void printPlayerMood(double moodNum) {
 double trackLengthRenderMultiplier(Race chosenTrack) {
   switch (chosenTrack.chosenTrackLength) {
   case LENGTH_SPRINT:
-    return 0.8;
+    return SPRINT_RENDER_MULT;
   case LENGTH_MILE:
-    return 1.0;
+    return MILE_RENDER_MULT;
   case LENGTH_MEDIUM:
-    return 1.2;
+    return MEDIUM_RENDER_MULT;
   case LENGTH_LONG:
-    return 1.4;
+    return LONG_RENDER_MULT;
   default:
     return 0.0;
   }
@@ -320,18 +306,16 @@ void renderRace(UmaRaceStats umas[], int turn, Race chosenTrack, int finishLine,
     if (nameLen > maxNameWidth)
       maxNameWidth = nameLen;
 
-    char *moodStr = printMoodRaceView(umaMood[i]);
+    const char *moodStr = getMoodName(umaMood[i]);
     int moodLen = strlen(moodStr);
     if (moodLen > maxMoodWidth)
       maxMoodWidth = moodLen;
-
-    free(moodStr);
   }
 
-  maxNameWidth += 2;
-  maxMoodWidth += 2;
-  for (int i = 0; i < npcCount + 1; i++) {
-    const char *moodStr = printMoodRaceView(umaMood[i]);
+  maxNameWidth += NAME_PADDING;
+  maxMoodWidth += NAME_PADDING;
+  for (int i = 0; i < npcCount + PLAYER_UMA; i++) {
+    const char *moodStr = getMoodName(umaMood[i]);
 
     printf("[%2d][%-*s|%*s] ", i + 1, maxNameWidth, umas[i].uma.name,
            maxMoodWidth, moodStr);
