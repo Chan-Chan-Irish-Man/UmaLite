@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="2304487850522846108">
+        <error id="normalCheckLevelMaxBranches" severity="information" msg="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." verbose="Limiting analysis of branches. Use --check-level=exhaustive to analyze all branches." file0="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c">
+            <location file="C:\Users\finta\OneDrive\Documents\Programming\C\UmaLite\src\ui.c" line="0" column="0"/>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:58:6" call-funcname="printUmaStats" call-argnr="1" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="109" col="16" call-argexpr="&amp;PlayerUma" call-argvaluetype="7" call-argvalue="0" call-argvalue-ufr="0"/><function-call call-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:52:5" call-funcname="getConfirmation" call-argnr="1" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="125" col="22" call-argexpr="prompt" call-argvaluetype="7" call-argvalue="256" call-argvalue-ufr="0"/>  </FileInfo>
+  <FileInfo check="Bounds checking">
+    <array-index>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:54:6" my-argnr="1" my-argname="stats" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="65" col="29" value="16"/>
+    </array-index>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:52:5" my-argnr="1" my-argname="prompt" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="43" col="16" value="0"/>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:54:6" my-argnr="1" my-argname="stats" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="65" col="29" value="0"/>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:58:6" my-argnr="1" my-argname="uma" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="96" col="24" value="0"/>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:58:6" my-argnr="2" my-argname="label" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="96" col="35" value="0"/>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:69:5" my-argnr="1" my-argname="prompt" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="192" col="18" value="0"/>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:81:6" my-argnr="2" my-argname="turn" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="298" col="42" value="0"/>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:81:6" my-argnr="5" my-argname="umaMood" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="331" col="19" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:54:6" my-argnr="1" my-argname="stats" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="65" col="29" value="0"/>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:58:6" my-argnr="1" my-argname="uma" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="96" col="24" value="0"/>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:81:6" my-argnr="2" my-argname="turn" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="298" col="42" value="0"/>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:81:6" my-argnr="5" my-argname="umaMood" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" line="331" col="19" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="gradeConvert" lineNumber="32"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="getConfirmation" lineNumber="41"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="printGeneratedPlayerStats" lineNumber="57"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="enterName" lineNumber="71"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="printUmaStats" lineNumber="95"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="playerWon" lineNumber="107"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="playerLost" lineNumber="114"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="typeName" lineNumber="132"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="lengthName" lineNumber="143"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="conditionName" lineNumber="158"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="printRace" lineNumber="173"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="printCurrentRace" lineNumber="179"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="getValidatedInt" lineNumber="185"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="printStatUp" lineNumber="210"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="displayStatOptions" lineNumber="214"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="printInheritedStats" lineNumber="240"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="getMoodName" lineNumber="251"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="printPlayerMood" lineNumber="271"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="trackLengthRenderMultiplier" lineNumber="278"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c" functionName="renderRace" lineNumber="293"/>
+    <functioncall functionName="conditionName"/>
+    <functioncall functionName="exit"/>
+    <functioncall functionName="fgets"/>
+    <functioncall functionName="fprintf"/>
+    <functioncall functionName="getConfirmation"/>
+    <functioncall functionName="getMoodName"/>
+    <functioncall functionName="getc"/>
+    <functioncall functionName="getchar"/>
+    <functioncall functionName="gradeConvert"/>
+    <functioncall functionName="lengthName"/>
+    <functioncall functionName="malloc"/>
+    <functioncall functionName="printPlayerMood"/>
+    <functioncall functionName="printUmaStats"/>
+    <functioncall functionName="printf"/>
+    <functioncall functionName="putchar"/>
+    <functioncall functionName="snprintf"/>
+    <functioncall functionName="stderr"/>
+    <functioncall functionName="stdin"/>
+    <functioncall functionName="strchr"/>
+    <functioncall functionName="strcmp"/>
+    <functioncall functionName="strcspn"/>
+    <functioncall functionName="strlen"/>
+    <functioncall functionName="strtol"/>
+    <functioncall functionName="system"/>
+    <functioncall functionName="tolower"/>
+    <functioncall functionName="typeName"/>
+  </FileInfo>
+</analyzerinfo>

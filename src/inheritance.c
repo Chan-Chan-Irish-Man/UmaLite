@@ -11,11 +11,11 @@ int newGameMultiplier(int oldStat) {
 
 int **getStatsPointers(Uma *uma) {
   static int *stats[STAT_AMOUNT];
-  stats[0] = &uma->stats.speed;
-  stats[1] = &uma->stats.stamina;
-  stats[2] = &uma->stats.power;
-  stats[3] = &uma->stats.guts;
-  stats[4] = &uma->stats.wit;
+  stats[SPEED] = &uma->stats.speed;
+  stats[STAMINA] = &uma->stats.stamina;
+  stats[POWER] = &uma->stats.power;
+  stats[GUTS] = &uma->stats.guts;
+  stats[WIT] = &uma->stats.wit;
 
   return stats;
 }

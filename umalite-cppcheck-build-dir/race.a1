@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="12443786916270978381">
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c:22:12" call-funcname="pickRandomFromBitmask" call-argnr="2" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" line="36" col="42" call-argexpr="options" call-argvaluetype="7" call-argvalue="8" call-argvalue-ufr="0"/><function-call call-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c:22:12" call-funcname="pickRandomFromBitmask" call-argnr="2" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" line="41" col="44" call-argexpr="options" call-argvaluetype="7" call-argvalue="16" call-argvalue-ufr="0"/><function-call call-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c:22:12" call-funcname="pickRandomFromBitmask" call-argnr="2" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" line="46" col="47" call-argexpr="options" call-argvaluetype="7" call-argvalue="16" call-argvalue-ufr="0"/><function-call call-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:67:6" call-funcname="printRace" call-argnr="1" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" line="60" col="14" call-argexpr="i" call-argvaluetype="0" call-argvalue="0" call-argvalue-ufr="0">
+  <path file="C:\Users\finta\OneDrive\Documents\Programming\C\UmaLite\src\race.c" line="58" col="16" info="Assignment &apos;i=0&apos;, assigned value is 0"/>
+</function-call>  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" functionName="pickRandomFromBitmask" lineNumber="22"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" functionName="pickRandomType" lineNumber="34"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" functionName="pickRandomLength" lineNumber="39"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" functionName="pickRandomCondition" lineNumber="44"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" functionName="createRace" lineNumber="49"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" functionName="initAvailableRaces" lineNumber="57"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" functionName="integerAverage" lineNumber="64"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" functionName="typeEffectiveness" lineNumber="68"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" functionName="lengthEffectiveness" lineNumber="82"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" functionName="conditionEffectiveness" lineNumber="103"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c" functionName="totalEffectiveness" lineNumber="122"/>
+    <functioncall functionName="createRace"/>
+    <functioncall functionName="integerAverage"/>
+    <functioncall functionName="pickRandomCondition"/>
+    <functioncall functionName="pickRandomFromBitmask"/>
+    <functioncall functionName="pickRandomLength"/>
+    <functioncall functionName="pickRandomType"/>
+    <functioncall functionName="printRace"/>
+    <functioncall functionName="rand"/>
+  </FileInfo>
+</analyzerinfo>

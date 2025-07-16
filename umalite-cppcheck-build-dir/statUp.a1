@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="9965672680573326482">
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:69:5" call-funcname="getValidatedInt" call-argnr="2" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/statUp.c" line="65" col="39" call-argexpr="0" call-argvaluetype="0" call-argvalue="0" call-argvalue-ufr="0"/>  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/statUp.c" functionName="statUpAmount" lineNumber="9"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/statUp.c" functionName="addPoints" lineNumber="13"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/statUp.c" functionName="applyWitToAllStats" lineNumber="40"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/statUp.c" functionName="statUp" lineNumber="53"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="addPoints"/>
+    <functioncall functionName="applyWitBuff"/>
+    <functioncall functionName="applyWitToAllStats"/>
+    <functioncall functionName="averageStat"/>
+    <functioncall functionName="displayStatOptions"/>
+    <functioncall functionName="getValidatedInt"/>
+    <functioncall functionName="printStatUp"/>
+    <functioncall functionName="printf"/>
+    <functioncall functionName="statUpAmount"/>
+  </FileInfo>
+</analyzerinfo>

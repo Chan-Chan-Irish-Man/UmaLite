@@ -1,0 +1,20 @@
+gradeConvert global:[gradeTable,gradeTableSize]
+getConfirmation call:[fgets,getchar,printf,return,sizeof,strchr,strcmp,strcspn,tolower] noreturn:[return,tolower]
+printGeneratedPlayerStats global:[statsNames] call:[gradeConvert,printf] noreturn:[printf]
+enterName call:[exit,fgets,fprintf,getConfirmation,getchar,malloc,printf,strchr,strcspn] noreturn:[exit]
+printUmaStats call:[gradeConvert,printf] noreturn:[printf]
+playerWon global:[PlayerUma] call:[exit,getc,printUmaStats,printf] noreturn:[exit]
+playerLost global:[PlayerUma,restart] call:[exit,getConfirmation,printf,sizeof,snprintf] noreturn:[exit]
+typeName
+lengthName
+conditionName
+printRace call:[conditionName,lengthName,printf,typeName] noreturn:[printf]
+printCurrentRace call:[conditionName,lengthName,printf,typeName] noreturn:[printf]
+getValidatedInt call:[fgets,printf,sizeof,strtol,while] noreturn:[printf]
+printStatUp global:[PlayerUma] call:[printf] noreturn:[printf]
+displayStatOptions global:[PlayerUma,statsNames] call:[gradeConvert,printf] noreturn:[printf]
+printInheritedStats global:[PlayerUma,statsNames] call:[printf] noreturn:[printf]
+getMoodName
+printPlayerMood global:[PlayerUma] call:[getMoodName,printf] noreturn:[printf]
+trackLengthRenderMultiplier
+renderRace call:[getMoodName,lengthName,printPlayerMood,printf,putchar,strlen,system] noreturn:[printPlayerMood,printf,putchar]

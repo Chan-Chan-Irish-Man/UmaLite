@@ -1,0 +1,2 @@
+getRandomMood global:[moodWeights] call:[rand,return]
+moodMultiplier call:[getRandomMood]

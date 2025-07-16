@@ -6,7 +6,6 @@
 #include "string.h"
 #include "ui.h"
 
-// =================== NAME POOLS ===================
 static const char *umaForename[] = {
     "Top",   "Admire",  "Mejiro", "Silence", "Nice",    "Great", "King",
     "Queen", "Special", "Daiwa",  "Rice",    "Digital", "Hishi", "Mihono"};
@@ -53,7 +52,7 @@ char *getRandomName(void) {
 
 Uma PlayerUma;
 
-void generatePlayerWitBonusArray(int *baseStatsArray, int *bonusArray,
+void generatePlayerWitBonusArray(const int *baseStatsArray, int *bonusArray,
                                  int wit) {
   for (int i = 0; i < STAT_AMOUNT; i++) {
     bonusArray[i] = applyWitBuff(baseStatsArray[i], wit) - baseStatsArray[i];

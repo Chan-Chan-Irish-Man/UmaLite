@@ -29,7 +29,7 @@ int main(void) {
     Uma *npc = generateNPCUma(randNPCCount, turn);
 
     int placementCutoff = randNPCCount + PLACEMENT_GRACE_OFFSET - turn;
-    generateRace(npc, turn, randNPCCount, totalRaces, placementCutoff);
+    generateRace(npc, &turn, randNPCCount, totalRaces, placementCutoff);
 
     // generateRace(generateNPCUma...) is certainly an option,
     // but I would be unable to free the npc uma struct

@@ -1,0 +1,4 @@
+newGameMultiplier call:[return]
+getStatsPointers
+applyStatInheritance call:[newGameMultiplier]
+umaInheritance global:[PlayerUma] call:[applyStatInheritance,generatePlayerUma,getStatsPointers,printInheritedStats] noreturn:[printInheritedStats]

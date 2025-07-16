@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="13265274088880527214">
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/mood.c" functionName="getRandomMood" lineNumber="7"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/mood.c" functionName="moodMultiplier" lineNumber="24"/>
+    <functioncall functionName="getRandomMood"/>
+    <functioncall functionName="rand"/>
+  </FileInfo>
+</analyzerinfo>

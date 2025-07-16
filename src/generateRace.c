@@ -25,7 +25,7 @@ int calculateTotalScore(Stats stats, Race race, double mood) {
          mood;
 }
 
-int findBestNpcIndex(int npcTotals[], int npcCount) {
+int findBestNpcIndex(const int npcTotals[], int npcCount) {
   int bestScore = 0, bestIndex = 0;
   for (int i = 0; i < npcCount; ++i) {
     if (npcTotals[i] > bestScore) {
@@ -36,7 +36,8 @@ int findBestNpcIndex(int npcTotals[], int npcCount) {
   return bestIndex;
 }
 
-int calculatePlayerPlacement(int playerScore, int npcTotals[], int npcCount) {
+int calculatePlayerPlacement(int playerScore, const int npcTotals[],
+                             int npcCount) {
   int placement = 1;
   for (int i = 0; i < npcCount; ++i) {
     if (playerScore < npcTotals[i])
@@ -45,7 +46,7 @@ int calculatePlayerPlacement(int playerScore, int npcTotals[], int npcCount) {
   return placement;
 }
 
-void generateRace(Uma NPCUma[], int turn, int npcCount, int totalRaces,
+void generateRace(Uma NPCUma[], const int *turn, int npcCount, int totalRaces,
                   int placementCutoff) {
   Race availableRaces[NUM_TRACKS];
   initAvailableRaces(availableRaces, NUM_TRACKS);
@@ -79,7 +80,7 @@ void generateRace(Uma NPCUma[], int turn, int npcCount, int totalRaces,
 
   if (playerPlacement != 1) {
     int winnerIndex = findBestNpcIndex(npcScores, npcCount);
-    Uma *winner = &NPCUma[winnerIndex];
+    const Uma *winner = &NPCUma[winnerIndex];
 
     printf("\n%s won the race.\n", winner->name);
     printUmaStats(winner, "Stats");
@@ -89,10 +90,9 @@ void generateRace(Uma NPCUma[], int turn, int npcCount, int totalRaces,
 
   if (playerPlacement >= placementCutoff) {
     playerLost(playerPlacement, npcCount);
-  } else if (turn > npcCount && hasPlayerWonFinalRace) {
+  } else if (*turn > npcCount && hasPlayerWonFinalRace) {
     playerWon();
   } else {
     statUp(playerPlacement);
-    turn++;
   }
 }

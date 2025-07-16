@@ -25,7 +25,7 @@ int raceEnd(UmaRaceStats umas[], int totalUmas, int finishLine) {
   return 1;
 }
 
-void generateScoreArray(int playerScore, int npcScores[], int allScores[],
+void generateScoreArray(int playerScore, const int npcScores[], int allScores[],
                         int totalUmas) {
   for (int i = 0; i < totalUmas - 1; i++) {
     allScores[i] = npcScores[i];
@@ -39,7 +39,7 @@ int compareUmaScores(const void *a, const void *b) {
   return ub->score - ua->score; // Descending
 }
 
-void sortIndicesByScore(int allScores[], int indices[], int totalUmas) {
+void sortIndicesByScore(const int allScores[], int indices[], int totalUmas) {
   UmaScore umaScr[totalUmas];
 
   for (int i = 0; i < totalUmas; i++) {
@@ -54,7 +54,7 @@ void sortIndicesByScore(int allScores[], int indices[], int totalUmas) {
   }
 }
 
-void mapSpeed(int indices[], int speedMap[], int totalUmas) {
+void mapSpeed(const int indices[], int speedMap[], int totalUmas) {
   int fastestUma = totalUmas;
   int range = fastestUma - SLOWEST_UMA;
 
@@ -65,7 +65,7 @@ void mapSpeed(int indices[], int speedMap[], int totalUmas) {
   }
 }
 
-void fillUmaStats(int speedMap[], int totalUmas, UmaRaceStats umas[],
+void fillUmaStats(const int speedMap[], int totalUmas, UmaRaceStats umas[],
                   Uma NPCUma[]) {
   for (int i = 0; i < totalUmas; i++) {
     const Uma *u = (i == totalUmas - 1) ? &PlayerUma : &NPCUma[i];
@@ -87,8 +87,9 @@ void initializeRaceUmas(int playerScore, int npcScores[], int totalUmas,
   fillUmaStats(speedMap, totalUmas, umas, NPCUma);
 }
 
-void raceView(int playerScore, int npcScores[], int turn, Race chosenTrack,
-              double umaMood[], int npcCount, Uma NPCUma[], int totalRaces) {
+void raceView(int playerScore, int npcScores[], const int *turn,
+              Race chosenTrack, double umaMood[], int npcCount, Uma NPCUma[],
+              int totalRaces) {
   const int totalUmas = npcCount + 1;
   UmaRaceStats umas[totalUmas];
 

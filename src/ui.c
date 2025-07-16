@@ -54,7 +54,7 @@ int getConfirmation(const char *prompt) {
   return (strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0);
 }
 
-void printGeneratedPlayerStats(int **stats, int *statsWitBonus, int avg) {
+void printGeneratedPlayerStats(int **stats, const int *statsWitBonus, int avg) {
   int i;
 
   for (i = 0; i < STAT_AMOUNT - WIT_OFFSET; i++) {
@@ -207,7 +207,7 @@ int getValidatedInt(const char *prompt, int min, int max) {
   return value;
 }
 
-void printStatUp(char *text, int playerPlacement, int availPoints) {
+void printStatUp(const char *text, int playerPlacement, int availPoints) {
   printf(text, PlayerUma.name, playerPlacement, availPoints);
 }
 
@@ -290,11 +290,12 @@ double trackLengthRenderMultiplier(Race chosenTrack) {
   }
 }
 
-void renderRace(UmaRaceStats umas[], int turn, Race chosenTrack, int finishLine,
-                double umaMood[], int npcCount, int totalRaces) {
+void renderRace(UmaRaceStats umas[], const int *turn, Race chosenTrack,
+                int finishLine, const double umaMood[], int npcCount,
+                int totalRaces) {
   system("cls");
 
-  printf("Race [%d/%d], at %s. (%s)\n", turn, totalRaces,
+  printf("Race [%d/%d], at %s. (%s)\n", *turn, totalRaces,
          chosenTrack.course->courseName,
          lengthName(chosenTrack.chosenTrackLength));
 

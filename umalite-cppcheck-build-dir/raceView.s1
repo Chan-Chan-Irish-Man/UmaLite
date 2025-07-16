@@ -1,0 +1,9 @@
+initUma
+raceEnd
+generateScoreArray
+compareUmaScores
+sortIndicesByScore call:[qsort,sizeof]
+mapSpeed
+fillUmaStats global:[PlayerUma] call:[initUma] noreturn:[initUma]
+initializeRaceUmas call:[fillUmaStats,generateScoreArray,mapSpeed,sortIndicesByScore] noreturn:[fillUmaStats]
+raceView call:[Sleep,initializeRaceUmas,raceEnd,renderRace,trackLengthRenderMultiplier] noreturn:[Sleep]

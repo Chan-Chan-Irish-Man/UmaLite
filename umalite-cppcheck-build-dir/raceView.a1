@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="15002877084709663326">
+        <error id="uninitvar" severity="warning" msg="Uninitialized variables: umaScr.index, umaScr.score" verbose="Uninitialized variables: umaScr.index, umaScr.score" cwe="457" file0="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c">
+            <location file="C:\Users\finta\OneDrive\Documents\Programming\C\UmaLite\src\raceView.c" line="50" column="9"/>
+            <location file="C:\Users\finta\OneDrive\Documents\Programming\C\UmaLite\src\raceView.c" line="45" column="21" info="Assuming condition is false"/>
+            <symbol>umaScr</symbol>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/ui.h:81:6" call-funcname="renderRace" call-argnr="2" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" line="108" col="5" my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/include/raceView.h:26:6" my-argnr="3"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c:10:13" my-argnr="1" my-argname="umaSlot" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" line="12" col="3" value="0"/>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c:10:13" my-argnr="2" my-argname="uma" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" line="12" col="19" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c:10:13" my-argnr="2" my-argname="uma" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" line="12" col="19" value="0"/>
+    <unsafe-usage my-id="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c:78:6" my-argnr="2" my-argname="npcScores" file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" line="84" col="35" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" functionName="initUma" lineNumber="10"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" functionName="raceEnd" lineNumber="19"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" functionName="generateScoreArray" lineNumber="28"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" functionName="compareUmaScores" lineNumber="36"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" functionName="sortIndicesByScore" lineNumber="42"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" functionName="mapSpeed" lineNumber="57"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" functionName="fillUmaStats" lineNumber="68"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" functionName="initializeRaceUmas" lineNumber="78"/>
+    <functiondecl file="C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c" functionName="raceView" lineNumber="90"/>
+    <functioncall functionName="Sleep"/>
+    <functioncall functionName="compareUmaScores"/>
+    <functioncall functionName="fillUmaStats"/>
+    <functioncall functionName="generateScoreArray"/>
+    <functioncall functionName="initUma"/>
+    <functioncall functionName="initializeRaceUmas"/>
+    <functioncall functionName="mapSpeed"/>
+    <functioncall functionName="qsort"/>
+    <functioncall functionName="raceEnd"/>
+    <functioncall functionName="renderRace"/>
+    <functioncall functionName="sortIndicesByScore"/>
+    <functioncall functionName="trackLengthRenderMultiplier"/>
+  </FileInfo>
+</analyzerinfo>

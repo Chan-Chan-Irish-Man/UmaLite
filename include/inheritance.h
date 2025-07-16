@@ -3,15 +3,7 @@
 
 #include "generate.h"
 
-// =================== CONFIG CONSTANTS ===================
-
 #define INHERITANCE_MULTIPLIER .1f
-
-// =================== GLOBAL STATE ===================
-
-extern Uma OldPlayerUma;
-
-// =================== FUNCTIONS ===================
 
 int **getStatsPointers(Uma *uma);
 void umaInheritance(void);

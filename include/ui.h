@@ -51,7 +51,7 @@ extern const char *const statsNames[STAT_AMOUNT];
 // used in generate.c
 int getConfirmation(const char *prompt);
 const char *gradeConvert(int stat);
-void printGeneratedPlayerStats(int **stats, int *statsWitBonus, int avg);
+void printGeneratedPlayerStats(int **stats, const int *statsWitBonus, int avg);
 char *enterName(void);
 
 // used in generateRace.c
@@ -69,7 +69,7 @@ void printCurrentRace(Race r);
 int getValidatedInt(const char *prompt, int min, int max);
 
 // used in statUp.c
-void printStatUp(char *text, int playerPlacement, int availPoints);
+void printStatUp(const char *text, int playerPlacement, int availPoints);
 void displayStatOptions(void);
 
 // used in inheritance.c
@@ -78,7 +78,8 @@ void printInheritedStats(const int *preBoosts, const int *boosts,
 
 // used in raceView.c
 double trackLengthRenderMultiplier(Race chosenTrack);
-void renderRace(UmaRaceStats umas[], int turn, Race chosenTrack, int finishLine,
-                double umaMood[], int npcCount, int totalRaces);
+void renderRace(UmaRaceStats umas[], const int *turn, Race chosenTrack,
+                int finishLine, const double umaMood[], int npcCount,
+                int totalRaces);
 
 #endif
