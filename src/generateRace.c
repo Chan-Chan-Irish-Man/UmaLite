@@ -71,8 +71,8 @@ void generateRace(Uma NPCUma[], int turn, int npcCount, int totalRaces,
 
   umaMood[npcCount] = playerMood;
 
-  raceView(playerScore, npcScores, turn, selectedRace.course->courseName,
-           umaMood, npcCount, NPCUma, totalRaces);
+  raceView(playerScore, npcScores, turn, selectedRace, umaMood, npcCount,
+           NPCUma, totalRaces);
 
   int playerPlacement =
       calculatePlayerPlacement(playerScore, npcScores, npcCount);

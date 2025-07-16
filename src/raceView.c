@@ -16,9 +16,9 @@ static void initUma(UmaRaceStats *umaSlot, const Uma *uma, char icon, int speed,
   umaSlot->isPlayer = isPlayer;
 }
 
-int raceEnd(UmaRaceStats umas[], int totalUmas) {
+int raceEnd(UmaRaceStats umas[], int totalUmas, int finishLine) {
   for (int i = 0; i < totalUmas; i++) {
-    if (umas[i].position < FINISH_LINE) {
+    if (umas[i].position < finishLine) {
       return 0;
     }
   }
@@ -60,7 +60,7 @@ void mapSpeed(int indices[], int speedMap[], int totalUmas) {
 
   for (int rank = 0; rank < totalUmas; rank++) {
     int umaIndex = indices[rank];
-    // Linearly map top rank to fastestUma, lowest to SLOWEST_UMA
+    // Linearly map top rank to fastestUma
     speedMap[umaIndex] = fastestUma - (rank * range / (totalUmas - 1));
   }
 }
@@ -87,22 +87,24 @@ void initializeRaceUmas(int playerScore, int npcScores[], int totalUmas,
   fillUmaStats(speedMap, totalUmas, umas, NPCUma);
 }
 
-void raceView(int playerScore, int npcScores[], int turn, const char *trackName,
+void raceView(int playerScore, int npcScores[], int turn, Race chosenTrack,
               double umaMood[], int npcCount, Uma NPCUma[], int totalRaces) {
   const int totalUmas = npcCount + 1;
   UmaRaceStats umas[totalUmas];
 
+  int finishLine = BASE_TRACK_LENGTH * trackLengthRenderMultiplier(chosenTrack);
+
   initializeRaceUmas(playerScore, npcScores, totalUmas, umas, NPCUma);
 
-  while (!raceEnd(umas, totalUmas)) {
+  while (!raceEnd(umas, totalUmas, finishLine)) {
     for (int i = 0; i < totalUmas; i++) {
       umas[i].position += umas[i].score;
-      if (umas[i].position > FINISH_LINE) {
-        umas[i].position = FINISH_LINE;
+      if (umas[i].position > finishLine) {
+        umas[i].position = finishLine;
       }
     }
 
-    renderRace(umas, turn, trackName, umaMood, npcCount,
+    renderRace(umas, turn, chosenTrack, finishLine, umaMood, npcCount,
                totalRaces); // Provided by ui.c
     Sleep(RACE_SPEED);
   }

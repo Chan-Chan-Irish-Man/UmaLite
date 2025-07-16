@@ -289,11 +289,28 @@ void printPlayerMood(double moodNum) {
          PlayerUma.name, mood, moodNum);
 }
 
-void renderRace(UmaRaceStats umas[], int turn, const char *trackName,
+double trackLengthRenderMultiplier(Race chosenTrack) {
+  switch (chosenTrack.chosenTrackLength) {
+  case LENGTH_SPRINT:
+    return 0.8;
+  case LENGTH_MILE:
+    return 1.0;
+  case LENGTH_MEDIUM:
+    return 1.2;
+  case LENGTH_LONG:
+    return 1.4;
+  default:
+    return 0.0;
+  }
+}
+
+void renderRace(UmaRaceStats umas[], int turn, Race chosenTrack, int finishLine,
                 double umaMood[], int npcCount, int totalRaces) {
   system("cls");
 
-  printf("Race [%d/%d], at %s.\n", turn, totalRaces, trackName);
+  printf("Race [%d/%d], at %s. (%s)\n", turn, totalRaces,
+         chosenTrack.course->courseName,
+         lengthName(chosenTrack.chosenTrackLength));
 
   int maxNameWidth = 0;
   int maxMoodWidth = 0;
@@ -313,14 +330,13 @@ void renderRace(UmaRaceStats umas[], int turn, const char *trackName,
 
   maxNameWidth += 2;
   maxMoodWidth += 2;
-
   for (int i = 0; i < npcCount + 1; i++) {
     const char *moodStr = printMoodRaceView(umaMood[i]);
 
     printf("[%2d][%-*s|%*s] ", i + 1, maxNameWidth, umas[i].uma.name,
            maxMoodWidth, moodStr);
 
-    for (int j = 0; j < FINISH_LINE; j++) {
+    for (int j = 0; j < finishLine; j++) {
       putchar(j == umas[i].position ? umas[i].icon : '=');
     }
 

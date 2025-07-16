@@ -38,7 +38,8 @@ void printInheritedStats(const int *preBoosts, const int *boosts,
                          int **newStats, Uma oldUma);
 
 // used in raceView.c
-void renderRace(UmaRaceStats umas[], int turn, const char *trackName,
+double trackLengthRenderMultiplier(Race chosenTrack);
+void renderRace(UmaRaceStats umas[], int turn, Race chosenTrack, int finishLine,
                 double umaMood[], int npcCount, int totalRaces);
 
 #endif
