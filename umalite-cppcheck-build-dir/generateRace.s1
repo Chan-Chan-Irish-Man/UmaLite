@@ -1,5 +1,0 @@
-toStats
-calculateTotalScore call:[conditionEffectiveness,lengthEffectiveness,totalEffectiveness,typeEffectiveness]
-findBestNpcIndex
-calculatePlayerPlacement
-generateRace global:[NUM_TRACKS,PlayerUma,hasPlayerWonFinalRace] call:[calculatePlayerPlacement,calculateTotalScore,findBestNpcIndex,getValidatedInt,initAvailableRaces,moodMultiplier,playerLost,playerWon,printCurrentRace,printUmaStats,printf,raceView,statUp,toStats] noreturn:[playerLost,playerWon,printUmaStats,statUp]

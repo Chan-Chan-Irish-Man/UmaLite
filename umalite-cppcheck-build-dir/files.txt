@@ -1,9 +1,0 @@
-generate.a1::C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/generate.c
-generateRace.a1::C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/generateRace.c
-inheritance.a1::C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/inheritance.c
-main.a1::C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/main.c
-mood.a1::C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/mood.c
-race.a1::C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/race.c
-raceView.a1::C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/raceView.c
-statUp.a1::C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/statUp.c
-ui.a1::C:/Users/finta/OneDrive/Documents/Programming/C/UmaLite/src/ui.c

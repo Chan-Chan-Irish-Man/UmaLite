@@ -1,4 +1,0 @@
-statUpAmount
-addPoints global:[PlayerUma]
-applyWitToAllStats global:[PlayerUma] call:[applyWitBuff] noreturn:[applyWitBuff]
-statUp global:[PlayerUma] call:[addPoints,applyWitToAllStats,averageStat,displayStatOptions,getValidatedInt,printStatUp,printf,statUpAmount] noreturn:[applyWitToAllStats,averageStat]

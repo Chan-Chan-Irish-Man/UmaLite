@@ -1,2 +1,0 @@
-initGame call:[generatePlayerUma,srand,time] noreturn:[generatePlayerUma]
-main global:[restart,turn] call:[free,generateNPCUma,generateRace,initGame,randNumInRange,umaInheritance]
