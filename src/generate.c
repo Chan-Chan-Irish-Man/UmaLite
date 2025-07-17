@@ -16,7 +16,7 @@ static const char *umaSurname[] = {
 
 int randNumInRange(int min, int max) { return rand() % (max + 1 - min) + min; }
 
-int isDuplicate(const char *name, char *generatedNames[], int npcAmount) {
+int isDuplicate(const char *name, char *const generatedNames[], int npcAmount) {
   for (int i = 0; i < npcAmount; ++i) {
     if (strcmp(generatedNames[i], name) == 0)
       return 1;
